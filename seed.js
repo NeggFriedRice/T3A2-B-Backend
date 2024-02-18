@@ -1,5 +1,6 @@
 import { closeConnection, Category } from './db.js'
 
+// Define the categories to be inserted
 const categories = [
     { name: 'Convention' }, 
     { name: 'Movie Screening' },
@@ -8,9 +9,9 @@ const categories = [
     { name: 'Special Event' }
 ]
 
-await Category.deleteMany()
-console.log('Deleted all categories')
-await Category.insertMany(categories)
+await Category.deleteMany() // Deletes all categories 
+console.log('Deleted all categories')  
+await Category.insertMany(categories) // Inserts the predefined categories
 console.log('Inserted categories')
 
 closeConnection()
