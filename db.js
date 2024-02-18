@@ -20,6 +20,16 @@ const closeConnection = () => {
 
 // Schema and model definitions
 
+const eventSchema = new mongoose.Schema({
+    title: {type: String, required: true}, // Name of the event is required and must be a string
+    description: {type: String, required: true}, // Description of the event is required and must be a string
+    date: {type: Date, required: true}, // Date of the event is required and must be a date
+    category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true} // Category of the event is required and must be a reference to the Category model
+})
+
+// Event model
+const Event = mongoose.model('Event', eventSchema)
+
 // Define the schema for the Category model
 const categorySchema = new mongoose.Schema({
     name: {type: String, required: true}, // Name of the category (e.g. Convention, Movie Screening, etc.) is required and must be a string
@@ -29,4 +39,4 @@ const categorySchema = new mongoose.Schema({
 const Category = mongoose.model('Category', categorySchema)
 
 // Export the functions and models
-export { closeConnection, Category }
+export { closeConnection, Category, Event }
