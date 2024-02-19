@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
 
 // Get a single event
 router.get('/:id', async (req, res) => {
-    // TODO: Create Functionality
     try {
         res.send( await Event.findById(req.params.id))
     } catch (error) {
@@ -19,9 +18,36 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create an event
-router.post('/', (req, res) => {
-    // TODO: Create Functionality
-    res.send('Create an event')
+
+/*
+title: string, required
+description: string, required
+date: date, required
+TODO: Add a field for location
+category: reference to Category, required
+TODO: Add a field for the image URL
+TODO: Add a field for anime
+TODO: Add a field for organiser
+TODO: Add a field for entry price
+TODO: Add a field for rsvp
+*/
+
+router.post('/', async (req, res) => {
+    const { title, description, category } = req.body
+
+    try {   
+        const insertedEvent = new Event({
+            title,
+            description,
+            date: new Date(),
+            category 
+        })
+        await insertedEvent.save()
+
+        res.status(201).send(insertedEvent)
+    } catch (error) {
+        res.status(400).send({ error: error.message})
+    }
 })
 
 // Update an event
