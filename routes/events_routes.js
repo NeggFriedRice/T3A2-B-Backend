@@ -3,10 +3,37 @@ import { Event } from '../db.js'
 
 const router = Router()
 
-// List of all events
+// Search by category, title, date
+
 router.get('/', async (req, res) => {
+    const { category, title, date } = req.body
+    switch (category, title, date) {
+        case category:
+            res.send(await Event.find
+                ({ category: category })
+            )
+            break
+        case title:
+            res.send(await Event.find
+                ({ title: title })
+            )
+            break
+        case date:
+            res.send(await Event.find
+                ({ date: date })
+            )
+            break
+        default: 
+            break
+    }
+})
+
+// List all events
+
+router.get('/all', async (req, res) => {
     res.send(await Event.find())
 })
+
 
 // Get a single event
 router.get('/:id', async (req, res) => {
