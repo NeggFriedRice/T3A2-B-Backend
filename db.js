@@ -32,6 +32,8 @@ const eventSchema = new mongoose.Schema({
     // TODO: Add a field for organiser
     // TODO: Add a field for entry price
     // TODO: Add a field for rsvp
+    date_created: {type: Date, default: Date.now}, // Date the event was created
+    date_last_edited: {type: Date}, // Date the event was last edited
 })
 
 // Event model
