@@ -6,32 +6,29 @@ const router = Router()
 // Search by category, title, date
 
 router.get('/', async (req, res) => {
-    const { category, title, date } = req.body
-    switch (category, title, date) {
-        case category:
-            res.send(await Event.find
-                ({ category: category })
-            )
-            break
-        case title:
-            res.send(await Event.find
-                ({ title: title })
-            )
-            break
-        case date:
-            const month = new Date(date).getMonth() + 1 // JavaScript months are 0-indexed
-            const year = new Date(date).getFullYear()
+    const { category, title, month, year } = req.body
+
+    if (category) {
+        res.send(await Event.find({ category: category }))
+    }
+    if (title) {
+        res.send(await Event.find({ title: title }))
+    }
+    if (month || year){
+        const conditions = []
+        if (month) {
+            conditions.push({ $eq: [{ $month: "$date" }, month] })
+        }
+        if (year) {
+            conditions.push({ $eq: [{ $year: "$date" }, year] })
+        }
+        if (conditions.length > 0) {
             res.send(await Event.find({
                 $expr: {
-                    $and: [
-                        { $eq: [{ $month: "$date" }, month] },
-                        { $eq: [{ $year: "$date" }, year] }
-                    ]
+                    $and: conditions
                 }
             }))
-            break
-        default: 
-            break
+        }
     }
 })
 
@@ -66,13 +63,16 @@ TODO: Add a field for rsvp
 */
 
 router.post('/', async (req, res) => {
-    const { title, description, category } = req.body
+    const { title, description, category, date } = req.body
+
+    const parsedDate = Date.parse(date)
 
     try {   
         const insertedEvent = new Event({
             title,
             description,
-            category 
+            category,
+            date: parsedDate
         })
         await insertedEvent.save()
 
