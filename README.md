@@ -9,6 +9,41 @@
 
 ### GET /events
 
+- Returns a list of events based on the query parameters in JSON format
+- Query parameters:
+  - title: String, optional
+  - category: ObjectId, optional
+  - month: Number, optional
+  - year: Number, optional
+
+Example:
+```JSON
+{
+  "title": "Event Title",
+  "category": "5f8a5e3e3f3e3e3e3e3e3e3e"
+}
+``` 
+returns all events with the title "Event Title" and category "5f8a5e3e3f3e3e3e3e3e3e3e"
+
+```JSON
+{
+  "month": 10,
+  "year": 2020
+}
+```
+returns all events in October 2020
+
+```JSON
+{
+  "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
+  "month": 10,
+  "year": 2020
+}
+```
+returns all events in category "5f8a5e3e3f3e3e3e3e3e3e3e" in October 2020
+
+### GET /events/all
+
 - Returns a list of all events in JSON format
 
 ### GET /events/:id
@@ -22,13 +57,15 @@
   - title: String, required
   - description: String, required
   - category: ObjectId, required
+  - date: Date(YYYY-MM-DD), required
 
 Example:
 ```json
 {
   "title": "Event Title",
   "description": "Event Description",
-  "category": "5f8a5e3e3f3e3e3e3e3e3e3e"
+  "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
+  "date": "YYYY-MM-DD"
 }
 ```
 
