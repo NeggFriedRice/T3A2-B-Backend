@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import { Event } from './db.js'
+import { Event, Category } from './db.js'
 
 const app = express() // Creates an Express application
 
@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 // List of all events
 app.get('/events', async (req, res) => {
     // TODO: Create Functionality
-    res.send( await Event.find() )
+    res.send(await Event.find())
 })
 
 // Get a single event
