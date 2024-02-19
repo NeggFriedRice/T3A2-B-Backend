@@ -1,8 +1,11 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { Category, Event } from './db.js'
+import cors from 'cors'
+import { Event } from './db.js'
 
 const app = express() // Creates an Express application
+
+app.use(cors()) // Enables Cross-Origin Resource Sharing (CORS)
 
 // Default Route
 app.get('/', (req, res) => {
@@ -14,13 +17,14 @@ app.get('/', (req, res) => {
 // List of all events
 app.get('/events', async (req, res) => {
     // TODO: Create Functionality
-    res.send(await Event.find())
+    res.send( await Event.find() )
 })
 
 // Get a single event
-app.get('/events/:id', (req, res) => {
+app.get('/events/:id', async (req, res) => {
     // TODO: Create Functionality
-    res.send('Get an event')
+    req.params.id
+    res.send( await Event.findById(req.params.id))
 })
 
 // Create an event
@@ -36,9 +40,11 @@ app.put('/events/:id', (req, res) => {
 })
 
 // Delete an event
-app.delete('/events/:id', (req, res) => {
+app.delete('/events/:id', async (req, res) => {
     // TODO: Create Functionality
-    res.send('Delete an event')
+    req.params.id
+    await Event.findByIdAndDelete(req.params.id)
+    res.send('Deleted an event')
 })
 
 // TESTING - Get all categories
