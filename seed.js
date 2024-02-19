@@ -19,22 +19,22 @@ console.log('Inserted categories')
 const events = [
     { title: "Sousou no Frieren",
       description: "Episodes 1 - 10 marathon",
-      date: new Date(),
+      date: "2024-02-06",
       category: "65d2d1572e99b8c3d3229cfb"
     },
     { title: "Steins;Gate: The Movie - Load Region of Deja Vu",
       description: "Movie screening",
-      date: new Date(),
+      date: "2025-02-01",
       category: "65d2d1572e99b8c3d3229cf9"
     },
     { title: "Oz Comic-Con",
       description: "Comic-Con - The ultimate pop culture event!",
-      date: new Date(),
+      date: "2024-06-08",
       category: "65d2d1572e99b8c3d3229cf8"
     },
     { title: "Kojima Meet & Greet",
       description: "Meet the madman behind Death Stranding",
-      date: new Date(),
+      date: "2024-04-05",
       category: "65d2d1572e99b8c3d3229cfc"
     }
 ]
