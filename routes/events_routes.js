@@ -51,9 +51,22 @@ router.post('/', async (req, res) => {
 })
 
 // Update an event
-router.put('/:id', (req, res) => {
-    // TODO: Create Functionality
-    res.send('Update an event')
+router.put('/:id', async (req, res) => {
+    const { title, description, category } = req.body
+    try {
+        const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
+            title,
+            description,
+            category
+        }, { new: true })
+        if (updateEvent) {
+            res.send(updateEvent)
+        } else {
+            res.status(404).send({ error: 'Entry does not exist' })
+        }
+    } catch (error) {
+        res.status(500).send({ error: error.message})
+    }
 })
 
 // Delete an event
