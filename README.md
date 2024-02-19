@@ -34,7 +34,20 @@ Example:
 
 ### PUT /events/:id
 
-Still in development
+- Updates an event
+
+- Requires a JSON body with the following optional fields:
+  - title: String
+  - description: String
+  - category: ObjectId
+
+Example:
+```json
+{
+  "title": "New Event Title", 
+  "category": "5f8a5e3e3f3e3e3e3e3e3e3e"
+}
+```
 
 ### DELETE /events/:id
 
