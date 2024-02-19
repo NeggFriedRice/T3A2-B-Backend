@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import { Category, Event } from './db.js'
 
 const app = express() // Creates an Express application
 
@@ -11,9 +12,9 @@ app.get('/', (req, res) => {
 /* Event Routes */
 
 // List of all events
-app.get('/events', (req, res) => {
+app.get('/events', async (req, res) => {
     // TODO: Create Functionality
-    res.send('List of events')
+    res.send(await Event.find())
 })
 
 // Get a single event
@@ -39,5 +40,8 @@ app.delete('/events/:id', (req, res) => {
     // TODO: Create Functionality
     res.send('Delete an event')
 })
+
+// TESTING - Get all categories
+app.get('/categories', async (req, res) => res.send(await Category.find()))
 
 export default app
