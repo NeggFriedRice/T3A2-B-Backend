@@ -47,4 +47,7 @@ app.delete('/events/:id', async (req, res) => {
     res.send('Deleted an event')
 })
 
+// TESTING - Get all categories
+app.get('/categories', async (req, res) => res.send(await Category.find()))
+
 export default app
