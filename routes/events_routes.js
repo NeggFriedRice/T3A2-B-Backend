@@ -19,9 +19,16 @@ router.get('/', async (req, res) => {
             )
             break
         case date:
-            res.send(await Event.find
-                ({ date: date })
-            )
+            const month = new Date(date).getMonth() + 1 // JavaScript months are 0-indexed
+            const year = new Date(date).getFullYear()
+            res.send(await Event.find({
+                $expr: {
+                    $and: [
+                        { $eq: [{ $month: "$date" }, month] },
+                        { $eq: [{ $year: "$date" }, year] }
+                    ]
+                }
+            }))
             break
         default: 
             break
@@ -49,7 +56,6 @@ router.get('/:id', async (req, res) => {
 /*
 title: string, required
 description: string, required
-date: date, required
 TODO: Add a field for location
 category: reference to Category, required
 TODO: Add a field for the image URL
@@ -66,7 +72,6 @@ router.post('/', async (req, res) => {
         const insertedEvent = new Event({
             title,
             description,
-            date: new Date(),
             category 
         })
         await insertedEvent.save()
@@ -84,7 +89,8 @@ router.put('/:id', async (req, res) => {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
             title,
             description,
-            category
+            category,
+            date_last_edited: Date.now()
         }, { new: true })
         if (updateEvent) {
             res.send(updateEvent)
