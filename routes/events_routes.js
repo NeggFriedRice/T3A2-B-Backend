@@ -4,40 +4,42 @@ import { Event } from '../db.js'
 const router = Router()
 
 // Search by category, title, date
-
 router.get('/', async (req, res) => {
     const { category, title, month, year } = req.body
+    const date = { month, year }
 
-    if (category) {
-        res.send(await Event.find({ category: category }))
-    }
-    if (title) {
-        res.send(await Event.find({ title: title }))
-    }
-    if (month || year){
-        const conditions = []
-        if (month) {
-            conditions.push({ $eq: [{ $month: "$date" }, month] })
-        }
-        if (year) {
-            conditions.push({ $eq: [{ $year: "$date" }, year] })
-        }
-        if (conditions.length > 0) {
-            res.send(await Event.find({
-                $expr: {
-                    $and: conditions
-                }
-            }))
-        }
+    switch (category, title, date) {
+        case category:
+            res.send(await Event.find({ category: category }))
+            break
+        case title:
+            res.send(await Event.find({ title: title }))
+            break
+        case date:
+            const conditions = []
+            if (date.month) {
+                conditions.push({ $eq: [{ $month: "$date" }, month] })
+            }
+            if (date.year) {
+                conditions.push({ $eq: [{ $year: "$date" }, year] })
+            }
+            if (conditions.length > 0) {
+                res.send(await Event.find({
+                    $expr: {
+                        $and: conditions
+                    }
+                }))
+            }
+            break
+        default:
+            break
     }
 })
 
 // List all events
-
 router.get('/all', async (req, res) => {
     res.send(await Event.find())
 })
-
 
 // Get a single event
 router.get('/:id', async (req, res) => {
@@ -49,17 +51,11 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create an event
-
 /*
 title: string, required
 description: string, required
-TODO: Add a field for location
 category: reference to Category, required
-TODO: Add a field for the image URL
-TODO: Add a field for anime
-TODO: Add a field for organiser
-TODO: Add a field for entry price
-TODO: Add a field for rsvp
+date: YYYY-MM-DD, required
 */
 
 router.post('/', async (req, res) => {
