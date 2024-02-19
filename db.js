@@ -39,7 +39,7 @@ const Event = mongoose.model('Event', eventSchema)
 
 // Define the schema for the Category model
 const categorySchema = new mongoose.Schema({
-    name: {type: String, required: true}, // Name of the category (e.g. Convention, Movie Screening, etc.) is required and must be a string
+    name: {type: String, required: true, unique: true}, // Name of the category (e.g. Convention, Movie Screening, etc.) is required and must be a string
 })
 
 // Category model
