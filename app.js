@@ -4,18 +4,22 @@ import cors from 'cors'
 import { Event, Category } from './db.js'
 import eventsRouter from './routes/events_routes.js'
 
-const app = express() // Creates an Express application
+// Creates an Express application
+const app = express()
 
-app.use(cors()) // Enables Cross-Origin Resource Sharing (CORS)
+// Enables Cross-Origin Resource Sharing (CORS)
+app.use(cors())
 
-app.use(express.json()) // Enables parsing of JSON body data
+// Enables parsing of JSON body data
+app.use(express.json())
 
 // Default Route
 app.get('/', (req, res) => {
     res.send('Hello, World!')
 })
 
-app.use('/events', eventsRouter) // Mounts the events router
+// Mounts the events router
+app.use('/events', eventsRouter)
 
 // TESTING - Get all categories
 app.get('/categories', async (req, res) => res.send(await Category.find()))
