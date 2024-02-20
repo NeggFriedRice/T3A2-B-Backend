@@ -8,7 +8,8 @@ router.get('/', async (req, res) => {
     const { username, isOrganiser, isAdmin } = req.body
 
     if (username) {
-        res.send(await User.find({ username: username }))
+        const regex = new RegExp(username, 'i')
+        res.send(await User.find({ username: regex }))
     } else if (isOrganiser) {
         res.send(await User.find({ isOrganiser: isOrganiser }))
     } else if (isAdmin) {
