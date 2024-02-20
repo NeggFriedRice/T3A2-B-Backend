@@ -7,18 +7,14 @@ const router = Router()
 router.get('/', async (req, res) => {
     const { username, isOrganiser, isAdmin } = req.body
 
-    switch (username, isOrganiser, isAdmin, date) {
-        case username:
-            res.send(await User.find({ username: username }))
-            break
-        case isOrganiser:
-            res.send(await User.find({ isOrganiser: isOrganiser }))
-            break
-        case isAdmin:
-            res.send(await User.find({ isAdmin: isAdmin }))
-            break
-        default:
-            break
+    if (username) {
+        res.send(await User.find({ username: username }))
+    } else if (isOrganiser) {
+        res.send(await User.find({ isOrganiser: isOrganiser }))
+    } else if (isAdmin) {
+        res.send(await User.find({ isAdmin: isAdmin }))
+    } else {
+        res.status(404).send({ error: 'User does not exist' })
     }
 })
 
