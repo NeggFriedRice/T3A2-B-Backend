@@ -1,8 +1,8 @@
 import express from 'express'
-import dotenv from 'dotenv'
 import cors from 'cors'
-import { Event, Category } from './db.js'
+import { Category } from './db.js'
 import eventsRouter from './routes/events_routes.js'
+import userRouter from './routes/user_routes.js'
 
 // Creates an Express application
 const app = express()
@@ -20,6 +20,9 @@ app.get('/', (req, res) => {
 
 // Mounts the events router
 app.use('/events', eventsRouter)
+
+// Mounts the user router
+app.use('/users', userRouter)
 
 // TESTING - Get all categories
 app.get('/categories', async (req, res) => res.send(await Category.find()))
