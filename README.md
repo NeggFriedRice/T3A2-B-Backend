@@ -153,3 +153,19 @@ Example:
   "password": "password"
 }
 ```
+
+### POST /signin
+
+- Signs in a user
+- Requires a JSON body with the following fields:
+  - username: String, required
+  - password: String, required
+  - returns if the username and password are correct
+
+Example:
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
