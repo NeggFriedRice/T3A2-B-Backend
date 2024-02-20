@@ -56,10 +56,11 @@ title: string, required
 description: string, required
 category: reference to Category, required
 date: YYYY-MM-DD, required
+anime: string, optional
 */
 
 router.post('/', async (req, res) => {
-    const { title, description, category, date } = req.body
+    const { title, description, category, date, anime } = req.body
 
     const parsedDate = Date.parse(date)
 
@@ -68,7 +69,8 @@ router.post('/', async (req, res) => {
             title,
             description,
             category,
-            date: parsedDate
+            date: parsedDate,
+            anime
         })
         await insertedEvent.save()
 
