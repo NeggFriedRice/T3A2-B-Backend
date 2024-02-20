@@ -3,6 +3,7 @@ import cors from 'cors'
 import { Category } from './db.js'
 import eventsRouter from './routes/events_routes.js'
 import userRouter from './routes/user_routes.js'
+import signupRouter from './routes/signup_route.js'
 
 // Creates an Express application
 const app = express()
@@ -23,6 +24,9 @@ app.use('/events', eventsRouter)
 
 // Mounts the user router
 app.use('/users', userRouter)
+
+// Mounts the signup router
+app.use('/signup', signupRouter)
 
 // TESTING - Get all categories
 app.get('/categories', async (req, res) => res.send(await Category.find()))
