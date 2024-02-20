@@ -65,38 +65,25 @@ console.log('Deleted events')
 await Event.insertMany(events)
 console.log('Added events')
 
-// Password hashing and salt generation
+// Define users to be inserted
+const users = [
+    { username: 'administrator', password: 'admin', isAdmin: true},
+    { username: 'organiser', password: 'organiser', isOrganiser: true },
+    { username: 'user', password: 'user' }
+]
 
+// Hash the passwords
+const saltRounds = 10 // Number of salt rounds for hashing the password
 
-// function hashPassword(password) {
-//     const saltRounds = 10 // Number of salt rounds for hashing the password
-//     return bcrypt.hash(password, saltRounds)
-// }
-
-// // Define users to be inserted
-// const users = [
-//     { 
-//         username: "admin", 
-//         password: await hashPassword("admin"), 
-//         salt: await bcrypt.genSalt(10),
-//         isAdmin: true 
-//     },
-//     { 
-//         username: "organiser", 
-//         salt: await bcrypt.genSalt(10),
-//         password: await bcrypt.hash("organiser", 10), 
-//         isOrganiser: true 
-//     },
-//     { 
-//         username: "user", 
-//         salt: await bcrypt.genSalt(10),
-//         password: await bcrypt.hash("user", 10),
-//     },
-// ]
+for (let user of users) {
+    const salt = await bcrypt.genSalt(saltRounds) // Generate a salt
+    user.password = await bcrypt.hash(user.password, salt) // Hash the password
+    user.salt = salt
+}
 
 await User.deleteMany()
 console.log("Deleted users")
-// await User.insertMany(users)
-// console.log("Added users")
+await User.insertMany(users)
+console.log("Added users")
 
 closeConnection()
