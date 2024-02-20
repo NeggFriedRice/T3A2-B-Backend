@@ -1,4 +1,5 @@
-import { closeConnection, Category, Event } from './db.js'
+import { closeConnection, Category, Event, User } from './db.js'
+import bcrypt from 'bcrypt'
 
 // Define the categories to be inserted
 const categories = [
@@ -63,5 +64,39 @@ await Event.deleteMany()
 console.log('Deleted events')
 await Event.insertMany(events)
 console.log('Added events')
+
+// Password hashing and salt generation
+
+
+// function hashPassword(password) {
+//     const saltRounds = 10 // Number of salt rounds for hashing the password
+//     return bcrypt.hash(password, saltRounds)
+// }
+
+// // Define users to be inserted
+// const users = [
+//     { 
+//         username: "admin", 
+//         password: await hashPassword("admin"), 
+//         salt: await bcrypt.genSalt(10),
+//         isAdmin: true 
+//     },
+//     { 
+//         username: "organiser", 
+//         salt: await bcrypt.genSalt(10),
+//         password: await bcrypt.hash("organiser", 10), 
+//         isOrganiser: true 
+//     },
+//     { 
+//         username: "user", 
+//         salt: await bcrypt.genSalt(10),
+//         password: await bcrypt.hash("user", 10),
+//     },
+// ]
+
+await User.deleteMany()
+console.log("Deleted users")
+// await User.insertMany(users)
+// console.log("Added users")
 
 closeConnection()
