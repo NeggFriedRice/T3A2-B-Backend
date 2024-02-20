@@ -38,7 +38,25 @@ const events = [
       description: "Meet the madman behind Death Stranding",
       date: "2024-04-05",
       category: "65d2d1572e99b8c3d3229cfc"
-    }
+    },
+    { title: "The Texas Chainsaw Man Watch Party",
+    description: "For those who haven't seen Chainsaw Man, come join us for a watch party at your local cinemas",
+    anime: "Chainsaw Man",
+    date: "2024-04-05",
+    category: "65d2d1572e99b8c3d3229cfc"
+    },
+    { title: "Throwback Thursdays: Cowboy Bebop Saga",
+    description: "The plan is to kick back and enjoy some old school cool Cowboy Bebop. We've got popcorn, we've got drinks, we've got bean bags!",
+    anime: "Cowboy Bebop",
+    date: "2024-04-05",
+    category: "65d2d1572e99b8c3d3229cfc"
+    },
+    { title: "Zoom Zoom Anime, Coffee & Cars Meet",
+    description: "Come by to watch some Initial D Stage 5 episodes and meet other like minded car enthusiasts",
+    anime: "Initial D",
+    date: "2024-04-05",
+    category: "65d2d1572e99b8c3d3229cfc"
+    },
 ]
 
 await Event.deleteMany()
