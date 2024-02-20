@@ -28,7 +28,7 @@ const eventSchema = new mongoose.Schema({
     // TODO: Add a field for location
     category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true}, // Category of the event is required and must be a reference to the Category model
     // TODO: Add a field for the image URL
-    // TODO: Add a field for anime
+    anime: {type: String},
     // TODO: Add a field for organiser
     // TODO: Add a field for entry price
     // TODO: Add a field for rsvp

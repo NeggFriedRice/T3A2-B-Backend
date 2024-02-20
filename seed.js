@@ -17,13 +17,15 @@ console.log('Inserted categories')
 
 // Define events to be inserted
 const events = [
-    { title: "Sousou no Frieren",
+    { title: "Animarathon Bonanza - Sousou no Frieren",
       description: "Episodes 1 - 10 marathon",
+      anime: "Sousou no Frieren",
       date: "2024-02-06",
       category: "65d2d1572e99b8c3d3229cfb"
     },
-    { title: "Steins;Gate: The Movie - Load Region of Deja Vu",
+    { title: "Popcorn;Gate: Load Region of Deja Vu",
       description: "Movie screening",
+      anime: "Steins;Gate",
       date: "2025-02-01",
       category: "65d2d1572e99b8c3d3229cf9"
     },
