@@ -97,3 +97,41 @@ Example:
 ### GET /categories
 
 - Returns a list of all categories in JSON format
+
+## Users
+
+### GET /users
+
+- Searches for a user based on the query parameters in JSON format
+- Query parameters:
+  - username: String, optional
+  - isOrganiser: Boolean, optional
+  - isAdmin: Boolean, optional
+
+Example:
+```JSON
+{
+  "username": "username",
+  "isOrganiser": true
+}
+```
+returns all users with the username "username" and is an organiser
+
+```JSON
+{
+  "isAdmin": true
+}
+```
+returns all users that are admins
+
+### GET /users/all
+
+- Returns a list of all users in JSON format
+
+### GET /users/:id
+
+- Returns a single user in JSON format
+
+### DELETE /users/:id
+
+- Deletes a user
