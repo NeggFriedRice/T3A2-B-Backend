@@ -6,33 +6,26 @@ const router = Router()
 // Search by category, title, date
 router.get('/', async (req, res) => {
     const { category, title, month, year } = req.body
-    const date = { month, year }
 
-    switch (category, title, date) {
-        case category:
-            res.send(await Event.find({ category: category }))
-            break
-        case title:
-            res.send(await Event.find({ title: title }))
-            break
-        case date:
-            const conditions = []
-            if (date.month) {
-                conditions.push({ $eq: [{ $month: "$date" }, month] })
-            }
-            if (date.year) {
-                conditions.push({ $eq: [{ $year: "$date" }, year] })
-            }
-            if (conditions.length > 0) {
-                res.send(await Event.find({
-                    $expr: {
-                        $and: conditions
-                    }
-                }))
-            }
-            break
-        default:
-            break
+    if (category) {
+        res.send(await Event.find({ category: category }))
+    } else if (title) {
+        res.send(await Event.find({ title: title }))
+    } else if (month || year) {
+        const conditions = []
+        if (month) {
+            conditions.push({ $eq: [{ $month: "$date" }, month] })
+        }
+        if (year) {
+            conditions.push({ $eq: [{ $year: "$date" }, year] })
+        }
+        if (conditions.length > 0) {
+            res.send(await Event.find({
+                $expr: {
+                    $and: conditions
+                }
+            }))
+        }
     }
 })
 
