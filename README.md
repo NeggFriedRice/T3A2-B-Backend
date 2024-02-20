@@ -135,3 +135,21 @@ returns all users that are admins
 ### DELETE /users/:id
 
 - Deletes a user
+
+## Auth
+
+### POST /register
+
+- Registers a new user
+- Requires a JSON body with the following fields:
+  - username: String, required
+  - password: String, required
+- passwords are hashed and salted before being stored in the database
+
+Example:
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
