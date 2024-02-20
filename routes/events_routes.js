@@ -10,7 +10,8 @@ router.get('/', async (req, res) => {
     if (category) {
         res.send(await Event.find({ category: category }))
     } else if (title) {
-        res.send(await Event.find({ title: title }))
+        const regex = new RegExp(title, 'i')
+        res.send(await Event.find({ title: regex }))
     } else if (month || year) {
         const conditions = []
         if (month) {
