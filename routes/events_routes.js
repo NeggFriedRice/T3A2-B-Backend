@@ -1,10 +1,11 @@
 import { Router } from "express"
 import { Event } from '../db.js'
+import authenticateToken from "./auth.js"
 
 const router = Router()
 
 // Search by category, title, date
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     const { category, title, month, year } = req.body
 
     if (category) {
