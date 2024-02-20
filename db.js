@@ -66,5 +66,13 @@ const categorySchema = new mongoose.Schema({
 // Category model
 const Category = mongoose.model("Category", categorySchema)
 
+// Define the schema for the RefreshToken model
+const refreshTokenSchema = new mongoose.Schema({
+    token: { type: String, required: true }, // Token is required and must be a string
+})
+
+// RefreshToken model
+const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema)
+
 // Export the functions and models
-export { closeConnection, Category, Event, User }
+export { closeConnection, Category, Event, User, RefreshToken }
