@@ -58,6 +58,7 @@ returns all events in category "5f8a5e3e3f3e3e3e3e3e3e3e" in October 2020
   - description: String, required
   - category: ObjectId, required
   - date: Date(YYYY-MM-DD), required
+  - anime: String, optional
 
 Example:
 ```json
@@ -65,7 +66,8 @@ Example:
   "title": "Event Title",
   "description": "Event Description",
   "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
-  "date": "YYYY-MM-DD"
+  "date": "YYYY-MM-DD",
+  "anime": "Anime Title"
 }
 ```
 
