@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 const router = Router()
 
 // Signup
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
     const { username, password } = req.body
     const saltRounds = 10 // Number of salt rounds for hashing the password
 
