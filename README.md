@@ -33,6 +33,8 @@ Example:
 
 ### POST /events
 
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
 - Creates a new event
 - Requires a JSON body with the following fields:
   - title: String, required
@@ -54,6 +56,8 @@ Example:
 
 ### PUT /events/:id
 
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
 - Updates an event
 
 - Requires a JSON body with the following optional fields:
@@ -71,6 +75,8 @@ Example:
 
 ### DELETE /events/:id
 
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
 - Deletes an event
 
 ## Categories
@@ -82,6 +88,8 @@ Example:
 ## Users
 
 ### GET /users
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
 
 - Searches for a user based on the query parameters in the link
 - Query parameters:
@@ -97,13 +105,19 @@ Example:
 
 ### GET /users/all
 
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
 - Returns a list of all users in JSON format
 
 ### GET /users/:id
 
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
 - Returns a single user in JSON format
 
 ### DELETE /users/:id
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
 
 - Deletes a user
 
