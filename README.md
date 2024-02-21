@@ -9,7 +9,7 @@
 
 ### GET /events
 
-- Returns a list of events based on the query parameters in JSON format
+- Returns a list of events based on the query parameters in the link
 - Query parameters:
   - title: String, optional
   - category: ObjectId, optional
@@ -17,6 +17,12 @@
   - year: Number, optional
 
 Example:
+```
+/events?title=Event%20Title&category=5f8a5e3e3f3e3e3e3e3e3e3e
+/events?month=10&year=2020
+/events?category=5f8a5e3e3f3e3e3e3e3e3e3e&month=10&year=2020
+```
+
 ```JSON
 {
   "title": "Event Title",
@@ -102,13 +108,18 @@ Example:
 
 ### GET /users
 
-- Searches for a user based on the query parameters in JSON format
+- Searches for a user based on the query parameters in the link
 - Query parameters:
   - username: String, optional
   - isOrganiser: Boolean, optional
   - isAdmin: Boolean, optional
 
 Example:
+```
+/users?username=username&isOrganiser=true
+/users?isAdmin=true
+```
+
 ```JSON
 {
   "username": "username",
