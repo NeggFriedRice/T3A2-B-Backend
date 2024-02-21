@@ -23,31 +23,6 @@ Example:
 /events?category=5f8a5e3e3f3e3e3e3e3e3e3e&month=10&year=2020
 ```
 
-```JSON
-{
-  "title": "Event Title",
-  "category": "5f8a5e3e3f3e3e3e3e3e3e3e"
-}
-``` 
-returns all events with the title "Event Title" and category "5f8a5e3e3f3e3e3e3e3e3e3e"
-
-```JSON
-{
-  "month": 10,
-  "year": 2020
-}
-```
-returns all events in October 2020
-
-```JSON
-{
-  "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
-  "month": 10,
-  "year": 2020
-}
-```
-returns all events in category "5f8a5e3e3f3e3e3e3e3e3e3e" in October 2020
-
 ### GET /events/all
 
 - Returns a list of all events in JSON format
@@ -119,21 +94,6 @@ Example:
 /users?username=username&isOrganiser=true
 /users?isAdmin=true
 ```
-
-```JSON
-{
-  "username": "username",
-  "isOrganiser": true
-}
-```
-returns all users with the username "username" and is an organiser
-
-```JSON
-{
-  "isAdmin": true
-}
-```
-returns all users that are admins
 
 ### GET /users/all
 
