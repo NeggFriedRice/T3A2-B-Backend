@@ -138,7 +138,7 @@ returns all users that are admins
 
 ## Auth
 
-### POST /register
+### POST /auth/register
 
 - Registers a new user
 - Requires a JSON body with the following fields:
@@ -154,13 +154,14 @@ Example:
 }
 ```
 
-### POST /signin
+### POST /auth/login
 
 - Signs in a user
 - Requires a JSON body with the following fields:
   - username: String, required
   - password: String, required
   - returns if the username and password are correct
+- Returns a JSON Web Token (JWT) if the username and password are correct
 
 Example:
 ```json
@@ -169,3 +170,33 @@ Example:
   "password": "password"
 }
 ```
+
+```json
+{
+  "token": "JWT",
+  "refreshToken": "JWT"
+}
+```
+A JWT and a refresh token are returned if the username and password are correct
+
+### POST /auth/logout
+
+- Logs out a user by invalidating the JWT token in the Bearer header
+
+### POST /auth/token
+
+- Returns a new JWT if the refresh token is valid
+- Requires a JSON body with the following fields:
+  - refreshToken: String, required
+  - returns a new JWT if the refresh token is valid
+
+## JWT 
+
+- JWTs are used to authenticate users
+- They are passed in the Bearer header to authenticate requests
+- JWTs are valid for 15 minutes
+
+### Refresh Token
+
+- A refresh token is returned when a user logs in along with the JWT
+- It is used to get a new JWT when the old one expires by sending a POST request to /auth/token with the refresh token in the body
