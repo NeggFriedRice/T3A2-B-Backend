@@ -1,11 +1,11 @@
 import { Router } from "express"
 import { Event } from '../db.js'
-import authenticateToken from "./auth.js"
+import { authenticateToken } from './auth.js'
 
 const router = Router()
 
 // Search by category, title, date
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', async (req, res) => {
     const { category, title, month, year } = req.query
 
     if (category) {
@@ -54,7 +54,7 @@ date: YYYY-MM-DD, required
 anime: string, optional
 */
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
     const { title, description, category, date, anime } = req.body
 
     const parsedDate = Date.parse(date)
@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
 })
 
 // Update an event
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
     const { title, description, category } = req.body
     try {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
@@ -96,7 +96,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // Delete an event
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
     // TODO: Create Functionality
     req.params.id
     await Event.findByIdAndDelete(req.params.id)

@@ -1,10 +1,11 @@
 import { Router } from "express"
 import { User } from '../db.js'
+import { authenticateToken } from "./auth.js"
 
 const router = Router()
 
 // Search by username, isOrganiser, isAdmin
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     const { username, isOrganiser, isAdmin } = req.query
 
     if (username) {
@@ -20,12 +21,12 @@ router.get('/', async (req, res) => {
 })
 
 // Get all users
-router.get('/all', async (req, res) => {
+router.get('/all', authenticateToken, async (req, res) => {
     res.send(await User.find())
 })
 
 // Get a single user by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
     try {
         res.send(await User.findById(req.params.id))
     } catch (error) {
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // Delete a user
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
     try {
         res.send(await User.findByIdAndDelete(req.params.id))
     } catch (error) {
