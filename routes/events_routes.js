@@ -6,7 +6,7 @@ const router = Router()
 
 // Search by category, title, date
 router.get('/', authenticateToken, async (req, res) => {
-    const { category, title, month, year } = req.body
+    const { category, title, month, year } = req.query
 
     if (category) {
         res.send(await Event.find({ category: category }))

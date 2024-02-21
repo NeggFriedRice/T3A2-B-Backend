@@ -5,7 +5,7 @@ const router = Router()
 
 // Search by username, isOrganiser, isAdmin
 router.get('/', async (req, res) => {
-    const { username, isOrganiser, isAdmin } = req.body
+    const { username, isOrganiser, isAdmin } = req.query
 
     if (username) {
         const regex = new RegExp(username, 'i')
