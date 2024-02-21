@@ -39,7 +39,7 @@ router.delete('/logout', (req, res) => {
 })
 
 // Signup
-router.post('/signup', async (req, res) => {
+router.post('/register', async (req, res) => {
     const { username, password } = req.body
     const saltRounds = 10 // Number of salt rounds for hashing the password
 
