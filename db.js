@@ -48,7 +48,8 @@ const eventSchema = new mongoose.Schema({
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true }, // Category of the event is required and must be a reference to the Category model
     // TODO: Add a field for the image URL
     anime: { type: String },
-    // TODO: Add a field for organiser
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // User who created the event is required and must be a reference to the User model
+    organiser: { type: String, required: true }, // Organiser of the event is a reference to the User model
     // TODO: Add a field for entry price
     // TODO: Add a field for rsvp
     date_created: { type: Date, default: Date.now }, // Date the event was created

@@ -39,7 +39,7 @@ router.get('/all', async (req, res) => {
 // Get a single event
 router.get('/:id', async (req, res) => {
     try {
-        res.send( await Event.findById(req.params.id))
+        res.send(await Event.findById(req.params.id))
     } catch (error) {
         res.status(404).send({ error: 'Entry does not exist' })
     }
@@ -55,20 +55,21 @@ anime: string, optional
 */
 
 router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
-    const { title, description, category, date, anime } = req.body
-
+    const { title, description, category, date, anime, organiser } = req.body
     const parsedDate = Date.parse(date)
+    const userId = req.user._id
 
     try {   
         const insertedEvent = new Event({
-            title,
-            description,
-            category,
+            title: title,
+            description: description,
+            category: category,
             date: parsedDate,
-            anime
+            anime: anime,
+            createdBy: userId,
+            organiser: organiser
         })
         await insertedEvent.save()
-
         res.status(201).send(insertedEvent)
     } catch (error) {
         res.status(400).send({ error: error.message})
@@ -91,16 +92,20 @@ router.put('/:id', authenticateAdminOrOrganiser, async (req, res) => {
             res.status(404).send({ error: 'Entry does not exist' })
         }
     } catch (error) {
-        res.status(500).send({ error: error.message})
+        if (!res.headersSent) {
+            res.status(400).send({ error: error.message })
+        }
     }
 })
 
 // Delete an event
 router.delete('/:id', authenticateAdminOrOrganiser, async (req, res) => {
-    // TODO: Create Functionality
-    req.params.id
-    await Event.findByIdAndDelete(req.params.id)
-    res.send('Deleted an event')
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id)
+    if (deletedEvent) {
+        res.send('Entry deleted')
+    } else {
+        res.status(404).send({ error: 'Entry does not exist' })
+    }
 })
 
 export default router

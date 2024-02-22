@@ -2,11 +2,12 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 import { RefreshToken, User } from '../db.js'
 import bcrypt from 'bcrypt'
+import { Event } from '../db.js'
 
 const router = Router()
 
 function generateAccessToken(user) {
-    return jwt.sign({ username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '15m' })
+    return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '15m' })
 }
 
 router.post('/token', (req, res) => {
@@ -28,13 +29,27 @@ function authenticateAdmin(req, res, next) {
     verifyAndAttachUser(req, res, next, user => user.isAdmin)
 }
 
-function authenticateOrganiser(req, res, next) {
-    verifyAndAttachUser(req, res, next, user => user.isOrganiser)
+async function authenticateOrganiser(req, res, next) {
+    const eventId = await Event.findById(req.params.id)
+    verifyAndAttachUser(req, res, next, user => user.isOrganiser && eventId.createdBy.toString() === user._id)
 }
 
-function authenticateAdminOrOrganiser(req, res, next) {
-    verifyAndAttachUser(req, res, next, user => user.isAdmin || user.isOrganiser)
+async function authenticateAdminOrOrganiser(req, res, next) {
+    const eventId = await Event.findById(req.params.id)
+    verifyAndAttachUser(req, res, next, user => {
+        if (user.isAdmin) {
+            return true
+        }
+        if (user.isOrganiser) {
+            if (eventId) {
+                return eventId.createdBy.toString() === user._id
+            }
+            return true
+        }
+        return false
+    })
 }
+
 
 function verifyAndAttachUser(req, res, next, validationFn) {
     const authHeader = req.headers['authorization']
@@ -42,7 +57,7 @@ function verifyAndAttachUser(req, res, next, validationFn) {
     if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return handleAuthError(err, res)
+        if (err) return res.sendStatus(403) // invalid token
         if (!validationFn(user)) {
             return res.status(403).send({ error: 'Insufficient permissions' })
         }
