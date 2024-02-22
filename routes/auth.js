@@ -5,8 +5,8 @@ import bcrypt from 'bcrypt'
 
 const router = Router()
 
-function generateAccessToken(username) {
-    return jwt.sign(username, process.env.JWT_SECRET, { expiresIn: '15m' })
+function generateAccessToken(user) {
+    return jwt.sign({ username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '15m' })
 }
 
 router.post('/token', (req, res) => {
@@ -21,12 +21,31 @@ router.post('/token', (req, res) => {
 })
 
 function authenticateToken(req, res, next) {
+    verifyAndAttachUser(req, res, next, () => true) // Always valid
+}
+
+function authenticateAdmin(req, res, next) {
+    verifyAndAttachUser(req, res, next, user => user.isAdmin)
+}
+
+function authenticateOrganiser(req, res, next) {
+    verifyAndAttachUser(req, res, next, user => user.isOrganiser)
+}
+
+function authenticateAdminOrOrganiser(req, res, next) {
+    verifyAndAttachUser(req, res, next, user => user.isAdmin || user.isOrganiser)
+}
+
+function verifyAndAttachUser(req, res, next, validationFn) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     if (token == null) return res.sendStatus(401)
-
+  
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
+        if (err) return handleAuthError(err, res)
+        if (!validationFn(user)) {
+            return res.status(403).send({ error: 'Insufficient permissions' })
+        }
         req.user = user
         next()
     })
@@ -62,7 +81,7 @@ router.post('/login', async (req, res) => {
         const match = await bcrypt.compare(password, user.password)
         if (match) {
             const userName = { name: user }
-            const accessToken = generateAccessToken(userName)
+            const accessToken = generateAccessToken(user)
             const refreshToken = jwt.sign(userName, process.env.REFRESH_SECRET)
             const refreshTokenModel = new RefreshToken({ token: refreshToken })
             await refreshTokenModel.save()
@@ -80,4 +99,4 @@ router.post('/login', async (req, res) => {
 })
 
 export default router
-export { authenticateToken }
+export { authenticateToken, authenticateAdmin, authenticateOrganiser, authenticateAdminOrOrganiser }
