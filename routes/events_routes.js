@@ -1,13 +1,14 @@
 import { Router } from "express"
 import { Event, User } from '../db.js'
-import { authenticateAdmin, authenticateAdminOrOrganiser, authenticateOrganiser, authenticateToken } from './auth.js'
+import { authenticateAdminOrOrganiser, authenticateToken } from './auth.js'
 
-const router = Router()
+const router = Router() // Create a new router
 
 // Search by category, title, date
 router.get('/', async (req, res) => {
     const { category, title, month, year } = req.query
 
+    // Determine the search criteria
     if (category) {
         res.send(await Event.find({ category: category }))
     } else if (title) {
@@ -16,15 +17,18 @@ router.get('/', async (req, res) => {
     } else if (month || year) {
         const conditions = []
         if (month) {
+            // $eq is a MongoDB aggregation operator that compares two values and returns true if they are equivalent
             conditions.push({ $eq: [{ $month: "$date" }, month] })
         }
         if (year) {
+            // $eq is a MongoDB aggregation operator that compares two values and returns true if they are equivalent
             conditions.push({ $eq: [{ $year: "$date" }, year] })
         }
         if (conditions.length > 0) {
+            // $expr is a MongoDB aggregation operator that allows the use of aggregation expressions within the query language
             res.send(await Event.find({
                 $expr: {
-                    $and: conditions
+                    $and: conditions // $and is a MongoDB aggregation operator that returns true if all the conditions are true
                 }
             }))
         }
@@ -48,7 +52,7 @@ router.get('/:id', async (req, res) => {
 // Create an event
 router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
     const { title, description, category, date, anime, organiser, price } = req.body
-    const parsedDate = Date.parse(date)
+    const parsedDate = Date.parse(date) // Convert the date from a string to a Date object
     const userId = req.user._id
 
     try {   
@@ -111,10 +115,12 @@ router.post('/:id/rsvp-add', authenticateToken, async (req, res) => {
     const userId = req.user._id
     try {
         const event = await Event.findById(eventId)
+        // Check if the user has already RSVPed
         if (event) {
             if (event.rsvp.includes(userId)) {
                 res.status(400).send({ error: 'User has already RSVPed' })
             } else {
+                // Add the user to the RSVP list
                 event.rsvp.push(userId)
                 await event.save()
                 res.send({ message: 'RSVP added'})
@@ -132,9 +138,10 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
     const eventId = req.params.id
     const userId = req.user._id
     try {
-        const event = await Event.findById
-        (eventId)
+        const event = await Event.findById(eventId)
+        // Check if the user has already RSVPed
         if (event) {
+            // Remove the user from the RSVP list
             if (event.rsvp.includes(userId)) {
                 event.rsvp = event.rsvp.filter(id => id !== userId)
                 await event.save()
@@ -156,7 +163,7 @@ router.get('/:id/rsvp-count', async (req, res) => {
     try {
         const event = await Event.findById(eventId)
         if (event) {
-            res.send({ count: event.rsvp.length })
+            res.send({ count: event.rsvp.length }) // Return the number of RSVPs as a Number
         } else {
             res.status(404).send({ error: 'Entry does not exist' })
         }
@@ -165,4 +172,5 @@ router.get('/:id/rsvp-count', async (req, res) => {
     }
 })
 
+/* Exports */
 export default router

@@ -1,7 +1,6 @@
-import { closeConnection, Category, Event, User } from './db.js'
 import bcrypt from 'bcrypt'
+import { closeConnection, Category, Event, User } from './db.js'
 
-// Define the categories to be inserted
 const categories = [
     { name: 'Convention' }, 
     { name: 'Movie Screening' },
@@ -11,12 +10,11 @@ const categories = [
 ]
 
 
-await Category.deleteMany() // Deletes all categories 
+await Category.deleteMany()
 console.log('Deleted all categories')  
-await Category.insertMany(categories) // Inserts the predefined categories
+await Category.insertMany(categories)
 console.log('Inserted categories')
 
-// Define events to be inserted
 const events = [
     { title: "Animarathon Bonanza - Sousou no Frieren",
       description: "Episodes 1 - 10 marathon",
@@ -79,7 +77,6 @@ console.log('Deleted events')
 await Event.insertMany(events)
 console.log('Added events')
 
-// Define users to be inserted
 const users = [
     { username: 'administrator', password: 'admin', isAdmin: true},
     { username: 'organiser', password: 'organiser', isOrganiser: true },
@@ -88,7 +85,7 @@ const users = [
 
 // Hash the passwords
 const saltRounds = 10 // Number of salt rounds for hashing the password
-
+// Loop through the users and hash the passwords and add the salt
 for (let user of users) {
     const salt = await bcrypt.genSalt(saltRounds) // Generate a salt
     user.password = await bcrypt.hash(user.password, salt) // Hash the password

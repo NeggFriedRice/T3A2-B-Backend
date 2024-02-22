@@ -5,30 +5,24 @@ import eventsRouter from './routes/events_routes.js'
 import userRouter from './routes/user_routes.js'
 import authRouter, { authenticateAdmin, authenticateToken } from './routes/auth.js'
 
-// Creates an Express application
-const app = express()
+const app = express() // Create an Express application
 
-// Enables Cross-Origin Resource Sharing (CORS)
-app.use(cors())
+/* Middleware */
+app.use(cors()) // Enable All CORS Requests
 
-// Enables parsing of JSON body data
-app.use(express.json())
+app.use(express.json()) // Parse JSON bodies
 
-// Default Route
+/* API Routes */
 app.get('/', (req, res) => {
-    res.send('Hello, World!')
+    res.send('Welcome to the API!')
 })
-
-// Mounts the events router
 app.use('/events', eventsRouter)
 
-// Mounts the user router
 app.use('/users', authenticateAdmin, userRouter)
 
-// Mounts the auth router
 app.use('/auth', authRouter)
 
-// TESTING - Get all categories
 app.get('/categories', async (req, res) => res.send(await Category.find()))
 
+/* Exports */
 export default app

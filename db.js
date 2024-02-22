@@ -17,10 +17,7 @@ const closeConnection = () => {
     mongoose.connection.close()
 }
 
-// Schema and model definitions
-
-// Define the schema for the User model
-
+/* Schema & Models */
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true }, // Username is required and must be unique
     password: { type: String, required: true }, // Password is required and must be a string
@@ -35,45 +32,34 @@ const userSchema = new mongoose.Schema({
     isAdmin: { type: Boolean, default: false }, // isAdmin is a boolean and defaults to false
     date_created: { type: Date, default: Date.now }, // Date the user was created
 })
-
-// User model
 const User = mongoose.model("User", userSchema)
 
-// Define the schema for the Event model
 const eventSchema = new mongoose.Schema({
-    title: { type: String, required: true }, // Name of the event is required and must be a string
-    description: { type: String, required: true }, // Description of the event is required and must be a string
-    date: { type: Date, required: true }, // Date of the event is required and must be a date
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    date: { type: Date, required: true },
     // TODO: Add a field for location
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true }, // Category of the event is required and must be a reference to the Category model
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     // TODO: Add a field for the image URL
     anime: { type: String },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // User who created the event is required and must be a reference to the User model
-    organiser: { type: String, required: true }, // Organiser of the event is a reference to the User model
-    price: { type: Number }, // Price of the event is a number
-    rsvp: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // RSVPs is an array of references to the User model
-    date_created: { type: Date, default: Date.now }, // Date the event was created
-    date_last_edited: { type: Date }, // Date the event was last edited
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    organiser: { type: String, required: true },
+    price: { type: Number },
+    rsvp: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    date_created: { type: Date, default: Date.now },
+    date_last_edited: { type: Date },
 })
-
-// Event model
 const Event = mongoose.model("Event", eventSchema)
 
-// Define the schema for the Category model
 const categorySchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true }, // Name of the category (e.g. Convention, Movie Screening, etc.) is required and must be a string
+    name: { type: String, required: true, unique: true },
 })
-
-// Category model
 const Category = mongoose.model("Category", categorySchema)
 
-// Define the schema for the RefreshToken model
 const refreshTokenSchema = new mongoose.Schema({
-    token: { type: String, required: true }, // Token is required and must be a string
+    token: { type: String, required: true },
 })
-
-// RefreshToken model
 const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema)
 
-// Export the functions and models
+/* Exports */
 export { closeConnection, Category, Event, User, RefreshToken }
