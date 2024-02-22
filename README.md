@@ -144,6 +144,32 @@ Only administrators can access this route
 
 - Deletes a user
 
+### POST /events/:id/rsvp-add
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
+- Adds the user to the RSVP list of an event
+- Requires parameters in the link:
+  - id: ObjectId, required
+
+### POST /events/:id/rsvp-remove
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
+- Removes the user from the RSVP list of an event
+- Requires parameters in the link:
+  - id: ObjectId, required
+
+### POST /events/:id/rsvp-count
+
+- Returns the number of users who have RSVP'd to an event in JSON format
+
+```json
+{
+  "count": 5
+}
+```
+
 ## Auth
 
 ### POST /auth/register
