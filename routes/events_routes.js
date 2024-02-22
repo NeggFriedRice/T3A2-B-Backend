@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Event } from '../db.js'
+import { Event, User } from '../db.js'
 import { authenticateAdmin, authenticateAdminOrOrganiser, authenticateOrganiser, authenticateToken } from './auth.js'
 
 const router = Router()
@@ -102,6 +102,66 @@ router.delete('/:id', authenticateAdminOrOrganiser, async (req, res) => {
         res.send('Entry deleted')
     } else {
         res.status(404).send({ error: 'Entry does not exist' })
+    }
+})
+
+// RSVP to an event
+router.post('/:id/rsvp-add', authenticateToken, async (req, res) => {
+    const eventId = req.params.id
+    const userId = req.user._id
+    try {
+        const event = await Event.findById(eventId)
+        if (event) {
+            if (event.rsvp.includes(userId)) {
+                res.status(400).send({ error: 'User has already RSVPed' })
+            } else {
+                event.rsvp.push(userId)
+                await event.save()
+                res.send({ message: 'RSVP added'})
+            }
+        } else {
+            res.status(404).send({ error: 'Entry does not exist' })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }  
+})
+
+// Remove RSVP from an event
+router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
+    const eventId = req.params.id
+    const userId = req.user._id
+    try {
+        const event = await Event.findById
+        (eventId)
+        if (event) {
+            if (event.rsvp.includes(userId)) {
+                event.rsvp = event.rsvp.filter(id => id !== userId)
+                await event.save()
+                res.send({ message: 'RSVP removed' })
+            } else {
+                res.status(400).send({ error: 'User has not RSVPed' })
+            }
+        } else {
+            res.status(404).send({ error: 'Entry does not exist' })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+})
+
+// Get RSVP count for an event
+router.get('/:id/rsvp-count', async (req, res) => {
+    const eventId = req.params.id
+    try {
+        const event = await Event.findById(eventId)
+        if (event) {
+            res.send({ count: event.rsvp.length })
+        } else {
+            res.status(404).send({ error: 'Entry does not exist' })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
     }
 })
 
