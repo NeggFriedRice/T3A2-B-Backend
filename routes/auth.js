@@ -1,15 +1,16 @@
 import { Router } from 'express'
 import jwt from 'jsonwebtoken'
-import { RefreshToken, User } from '../db.js'
 import bcrypt from 'bcrypt'
-import { Event } from '../db.js'
+import { RefreshToken, User, Event } from '../db.js'
 
-const router = Router()
+const router = Router() // Create a new router
 
+// Generate an JWT access token
 function generateAccessToken(user) {
     return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '15m' })
 }
 
+// Check if the refresh token is valid and return a new access token
 router.post('/token', (req, res) => {
     const refreshTokenParam = req.body.token
     if (refreshTokenParam == null) return res.sendStatus(401)
@@ -21,19 +22,23 @@ router.post('/token', (req, res) => {
     })
 })
 
+// Middleware to authenticate the user using the access token
 function authenticateToken(req, res, next) {
     verifyAndAttachUser(req, res, next, () => true) // Always valid
 }
 
+// Checks if the user is an admin and verifies the access token
 function authenticateAdmin(req, res, next) {
     verifyAndAttachUser(req, res, next, user => user.isAdmin)
 }
 
+// Checks if the user is an organiser and verifies the access token
 async function authenticateOrganiser(req, res, next) {
     const eventId = await Event.findById(req.params.id)
     verifyAndAttachUser(req, res, next, user => user.isOrganiser && eventId.createdBy.toString() === user._id)
 }
 
+// Checks if the user is an admin or organiser and verifies the access token
 async function authenticateAdminOrOrganiser(req, res, next) {
     const eventId = await Event.findById(req.params.id)
     verifyAndAttachUser(req, res, next, user => {
@@ -41,6 +46,7 @@ async function authenticateAdminOrOrganiser(req, res, next) {
             return true
         }
         if (user.isOrganiser) {
+            // Check if the event was created by the organiser
             if (eventId) {
                 return eventId.createdBy.toString() === user._id
             }
@@ -50,7 +56,7 @@ async function authenticateAdminOrOrganiser(req, res, next) {
     })
 }
 
-
+// Verify the access token and attach the user to the request
 function verifyAndAttachUser(req, res, next, validationFn) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -93,11 +99,13 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body
     const user = await User.findOne({ username: username })
     if (user) {
-        const match = await bcrypt.compare(password, user.password)
+        const match = await bcrypt.compare(password, user.password) // Compare the password with the hash
         if (match) {
             const userName = { name: user }
-            const accessToken = generateAccessToken(user)
-            const refreshToken = jwt.sign(userName, process.env.REFRESH_SECRET)
+            const accessToken = generateAccessToken(user) // Generate an access token
+            const refreshToken = jwt.sign(userName, process.env.REFRESH_SECRET) // Generate a refresh token
+
+            // Save the refresh token in the database
             const refreshTokenModel = new RefreshToken({ token: refreshToken })
             await refreshTokenModel.save()
             res.send({ 
@@ -113,5 +121,6 @@ router.post('/login', async (req, res) => {
     }
 })
 
+/* Exports */
 export default router
 export { authenticateToken, authenticateAdmin, authenticateOrganiser, authenticateAdminOrOrganiser }

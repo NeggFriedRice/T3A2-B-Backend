@@ -3,6 +3,7 @@ import { User } from '../db.js'
 
 const router = Router()
 
+// User return structure
 class UserClass {
     constructor(user) {
         this._id = user._id
@@ -24,6 +25,7 @@ router.get('/', async (req, res) => {
     let query = {}
     
     if (username) {
+        // Create a case-insensitive regex for the username to allow partial matches
         const regex = new RegExp(username, 'i')
         query = { username: regex }
     } else if (isOrganiser) {
@@ -36,7 +38,7 @@ router.get('/', async (req, res) => {
 
     try {
         const users = await User.find(query)
-        const formattedUsers = users.map((u) => new UserClass(u))
+        const formattedUsers = users.map((u) => new UserClass(u)) // Map the users to the UserClass structure
         res.send({ user: formattedUsers })
     } catch (error) {
         console.error(error)
@@ -47,14 +49,16 @@ router.get('/', async (req, res) => {
 // Get all users
 router.get('/all', async (req, res) => {
     const users = await User.find()
-    const formattedUsers = users.map((u) => new UserClass(u))
+    const formattedUsers = users.map((u) => new UserClass(u)) // Map the users to the UserClass structure
     res.send({ user: formattedUsers })
 })
 
 // Get a single user by id
 router.get('/:id', async (req, res) => {
     try {
-        res.send(await User.findById(req.params.id))
+        const user = await User.findById(req.params.id)
+        const formattedUser = new UserClass(user) // Map the user to the UserClass structure
+        res.send({ user: formattedUser })
     } catch (error) {
         res.status(404).send({ error: 'User does not exist' })
     }
@@ -69,4 +73,5 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+/* Exports */
 export default router
