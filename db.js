@@ -50,7 +50,7 @@ const eventSchema = new mongoose.Schema({
     anime: { type: String },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // User who created the event is required and must be a reference to the User model
     organiser: { type: String, required: true }, // Organiser of the event is a reference to the User model
-    // TODO: Add a field for entry price
+    price: { type: Number }, // Price of the event is a number
     // TODO: Add a field for rsvp
     date_created: { type: Date, default: Date.now }, // Date the event was created
     date_last_edited: { type: Date }, // Date the event was last edited
