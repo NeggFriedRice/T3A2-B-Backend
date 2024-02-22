@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 app.use('/events', eventsRouter)
 
 // Mounts the user router
-app.use('/users', authenticateToken, authenticateAdmin, userRouter)
+app.use('/users', authenticateAdmin, userRouter)
 
 // Mounts the auth router
 app.use('/auth', authRouter)

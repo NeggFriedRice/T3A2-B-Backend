@@ -46,16 +46,8 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create an event
-/*
-title: string, required
-description: string, required
-category: reference to Category, required
-date: YYYY-MM-DD, required
-anime: string, optional
-*/
-
 router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
-    const { title, description, category, date, anime, organiser } = req.body
+    const { title, description, category, date, anime, organiser, price } = req.body
     const parsedDate = Date.parse(date)
     const userId = req.user._id
 
@@ -67,7 +59,8 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
             date: parsedDate,
             anime: anime,
             createdBy: userId,
-            organiser: organiser
+            organiser: organiser,
+            price: price
         })
         await insertedEvent.save()
         res.status(201).send(insertedEvent)
@@ -78,12 +71,16 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
 
 // Update an event
 router.put('/:id', authenticateAdminOrOrganiser, async (req, res) => {
-    const { title, description, category } = req.body
+    const { title, description, category, date, anime, organiser, price } = req.body
     try {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
-            title,
-            description,
-            category,
+            title: title,
+            description: description,
+            category: category,
+            date: date,
+            anime: anime,
+            organiser: organiser,
+            price: price,
             date_last_edited: Date.now()
         }, { new: true })
         if (updateEvent) {
