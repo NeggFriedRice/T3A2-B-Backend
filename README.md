@@ -44,6 +44,8 @@ User must be an organiser or administrator to create an event
   - category: ObjectId, required
   - date: Date(YYYY-MM-DD), required
   - anime: String, optional
+  - organiser: String, required
+  - price: Number, optional
 
 Example:
 ```json
@@ -70,6 +72,10 @@ User must be an organiser or administrator to update an event
   - title: String
   - description: String
   - category: ObjectId
+  - date: Date(YYYY-MM-DD)
+  - anime: String
+  - organiser: String
+  - price: Number
 
 Example:
 ```json
