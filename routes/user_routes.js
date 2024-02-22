@@ -3,25 +3,52 @@ import { User } from '../db.js'
 
 const router = Router()
 
+class UserClass {
+    constructor(user) {
+        this._id = user._id
+        this.username = user.username
+        this.isOrganiser = user.isOrganiser
+        this.picture = user.picture
+        this.description = user.description
+        this.animes = user.animes
+        this.characters = user.characters
+        this.actors = user.actors
+        this.isAdmin = user.isAdmin
+        this.date_created = user.date_created
+    }
+}
+
 // Search by username, isOrganiser, isAdmin
 router.get('/', async (req, res) => {
     const { username, isOrganiser, isAdmin } = req.query
-
+    let query = {}
+    
     if (username) {
         const regex = new RegExp(username, 'i')
-        res.send(await User.find({ username: regex }))
+        query = { username: regex }
     } else if (isOrganiser) {
-        res.send(await User.find({ isOrganiser: isOrganiser }))
+        query = { isOrganiser: isOrganiser }
     } else if (isAdmin) {
-        res.send(await User.find({ isAdmin: isAdmin }))
+        query = { isAdmin: isAdmin }
     } else {
-        res.status(404).send({ error: 'User does not exist' })
+        return res.status(404).send({ error: 'User does not exist' })
+    }
+
+    try {
+        const users = await User.find(query)
+        const formattedUsers = users.map((u) => new UserClass(u))
+        res.send({ user: formattedUsers })
+    } catch (error) {
+        console.error(error)
+        res.status(500).send({ error: 'Error fetching users' })
     }
 })
 
 // Get all users
 router.get('/all', async (req, res) => {
-    res.send(await User.find())
+    const users = await User.find()
+    const formattedUsers = users.map((u) => new UserClass(u))
+    res.send({ user: formattedUsers })
 })
 
 // Get a single user by id
