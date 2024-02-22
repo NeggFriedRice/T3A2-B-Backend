@@ -3,7 +3,7 @@ import cors from 'cors'
 import { Category } from './db.js'
 import eventsRouter from './routes/events_routes.js'
 import userRouter from './routes/user_routes.js'
-import authRouter from './routes/auth.js'
+import authRouter, { authenticateAdmin, authenticateToken } from './routes/auth.js'
 
 // Creates an Express application
 const app = express()
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 app.use('/events', eventsRouter)
 
 // Mounts the user router
-app.use('/users', userRouter)
+app.use('/users', authenticateToken, authenticateAdmin, userRouter)
 
 // Mounts the auth router
 app.use('/auth', authRouter)
