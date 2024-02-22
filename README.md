@@ -35,6 +35,8 @@ Example:
 
 #### **This is a protected route, a valid JWT is required in the Bearer header**
 
+User must be an organiser or administrator to create an event
+
 - Creates a new event
 - Requires a JSON body with the following fields:
   - title: String, required
@@ -50,13 +52,17 @@ Example:
   "description": "Event Description",
   "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
   "date": "YYYY-MM-DD",
-  "anime": "Anime Title"
+  "anime": "Anime Title",
+  "organiser": "Madman Entertainment"
 }
 ```
 
 ### PUT /events/:id
 
 #### **This is a protected route, a valid JWT is required in the Bearer header**
+
+User must be an organiser or administrator to update an event
+- For organisers, only events they have created can be updated or deleted
 
 - Updates an event
 
@@ -77,6 +83,9 @@ Example:
 
 #### **This is a protected route, a valid JWT is required in the Bearer header**
 
+User must be an organiser or administrator to update an event
+- For organisers, only events they have created can be updated or deleted
+
 - Deletes an event
 
 ## Categories
@@ -90,6 +99,8 @@ Example:
 ### GET /users
 
 #### **This is a protected route, a valid JWT is required in the Bearer header**
+
+Only administrators can access this route
 
 - Searches for a user based on the query parameters in the link
 - Query parameters:
@@ -105,17 +116,23 @@ Example:
 
 ### GET /users/all
 
+Only administrators can access this route
+
 #### **This is a protected route, a valid JWT is required in the Bearer header**
 
 - Returns a list of all users in JSON format
 
 ### GET /users/:id
 
+Only administrators can access this route
+
 #### **This is a protected route, a valid JWT is required in the Bearer header**
 
 - Returns a single user in JSON format
 
 ### DELETE /users/:id
+
+Only administrators can access this route
 
 #### **This is a protected route, a valid JWT is required in the Bearer header**
 
