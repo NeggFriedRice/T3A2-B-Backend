@@ -1,4 +1,4 @@
-import { Router } from "express"
+/* import { Router } from "express"
 import { authenticateToken } from "./auth.js"
 import multer from "multer"
 import s3 from "aws-sdk/clients-s3"
@@ -63,4 +63,4 @@ router.get('/pfp', authenticateToken, async (req, res) => {
 })
 
 
-export default router
+export default router */

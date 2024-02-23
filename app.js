@@ -4,7 +4,7 @@ import { Category } from './db.js'
 import eventsRouter from './routes/events_routes.js'
 import userRouter from './routes/user_routes.js'
 import authRouter, { authenticateAdmin, authenticateToken } from './routes/auth.js'
-import imagesRouter from './routes/images_route.js'
+// import imagesRouter from './routes/images_route.js'
 
 const app = express() // Create an Express application
 
@@ -23,7 +23,7 @@ app.use('/users', /* authenticateAdmin, */ userRouter)
 
 app.use('/auth', authRouter)
 
-app.use('/images', imagesRouter)
+// app.use('/images', imagesRouter)
 
 app.get('/categories', async (req, res) => res.send(await Category.find()))
 
