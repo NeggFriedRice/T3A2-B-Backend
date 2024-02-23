@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
     salt: { type: String, required: true }, // Salt is required and must be a string
     isOrganiser: { type: Boolean, default: false }, // isOrganiser is a boolean and defaults to false
     picture: { type: String }, // Picture is a string
+    pictureUrl: { type: String }, // Picture URL is a string
     description: { type: String }, // Description is a string
     animes: [{ type: String }],
     characters: [{ type: String }],
