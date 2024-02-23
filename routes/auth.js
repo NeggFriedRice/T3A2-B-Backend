@@ -95,6 +95,7 @@ router.post('/register', async (req, res) => {
     }
 })
 
+
 // Sign in
 router.post('/login', async (req, res) => {
     const { username, password } = req.body
@@ -109,7 +110,7 @@ router.post('/login', async (req, res) => {
             // Save the refresh token in the database
             const refreshTokenModel = new RefreshToken({ token: refreshToken })
             await refreshTokenModel.save()
-            const formattedUser = user.map((u) => new UserClass(u)) // Map the user to the UserClass structure
+            const formattedUser = new UserClass(user) // Map the user to the UserClass structure
             res.send({ 
                 message: 'Sign in successful',
                 user: formattedUser,
