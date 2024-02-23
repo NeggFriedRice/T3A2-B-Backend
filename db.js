@@ -25,12 +25,12 @@ const userSchema = new mongoose.Schema({
     isOrganiser: { type: Boolean, default: false }, // isOrganiser is a boolean and defaults to false
     picture: { type: String }, // Picture is a string
     description: { type: String }, // Description is a string
-    animes: [{ type: String }], // Animes is an array of strings
-    characters: [{ type: String }], // Characters is an array of strings
-    actors: [{ type: String }], // Actors is an array of strings
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }], // Events is an array of references to the Event model
-    isAdmin: { type: Boolean, default: false }, // isAdmin is a boolean and defaults to false
-    date_created: { type: Date, default: Date.now }, // Date the user was created
+    animes: [{ type: String }],
+    characters: [{ type: String }],
+    actors: [{ type: String }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
+    isAdmin: { type: Boolean, default: false },
+    date_created: { type: Date, default: Date.now },
 })
 const User = mongoose.model("User", userSchema)
 
