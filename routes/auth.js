@@ -2,6 +2,7 @@ import { Router } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { RefreshToken, User, Event } from '../db.js'
+import UserClass from '../data_structures.js'
 
 const router = Router() // Create a new router
 
@@ -108,8 +109,10 @@ router.post('/login', async (req, res) => {
             // Save the refresh token in the database
             const refreshTokenModel = new RefreshToken({ token: refreshToken })
             await refreshTokenModel.save()
+            const formattedUser = user.map((u) => new UserClass(u)) // Map the user to the UserClass structure
             res.send({ 
                 message: 'Sign in successful',
+                user: formattedUser,
                 accessToken: accessToken,
                 refreshToken: refreshToken
             })
