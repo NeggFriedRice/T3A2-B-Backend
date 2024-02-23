@@ -50,7 +50,7 @@ async function fetchFromS3(userId) {
     return await s3.send(command)
 }
 
-router.post('/pfp', authenticateToken, upload.single('image'), async (req, res) => {
+router.post('/pfp', /* authenticateToken, */ upload.single('image'), async (req, res) => {
     const userId = req.user._id
     const file = req.file
 
@@ -59,7 +59,7 @@ router.post('/pfp', authenticateToken, upload.single('image'), async (req, res) 
     res.send(result)
 })
 
-router.get('/pfp', authenticateToken, async (req, res) => {
+router.get('/pfp', /* authenticateToken, */ async (req, res) => {
     const userId = req.user._id
     const file = await fetchFromS3(userId)
 
