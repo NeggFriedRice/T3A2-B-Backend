@@ -58,5 +58,23 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
+// Update single user by id
+router.put('/:id', async (req, res) => {
+    const { isAdmin } = req.body
+    try {
+        const updateUser = await User.findByIdAndUpdate(req.params.id, {
+            isAdmin: isAdmin,
+        }, { new: true })
+        if (updateUser) {
+            res.send(updateUser)
+        } else {
+            res.status(404).send({ error: "User does not exist" })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+})
+
+
 /* Exports */
 export default router
