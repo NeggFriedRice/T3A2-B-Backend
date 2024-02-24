@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 
 // Create an event
 router.post('/', /* authenticateAdminOrOrganiser, */ async (req, res) => {
-    const { title, description, category, date, anime, organiser, price } = req.body
+    const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
     const parsedDate = Date.parse(date) // Convert the date from a string to a Date object
     const userId = req.user._id
 
@@ -61,6 +61,11 @@ router.post('/', /* authenticateAdminOrOrganiser, */ async (req, res) => {
             description: description,
             category: category,
             date: parsedDate,
+            venue: venue,
+            coords: {
+                lat: lat,
+                lon: long
+            },
             anime: anime,
             createdBy: userId,
             organiser: organiser,
@@ -75,13 +80,18 @@ router.post('/', /* authenticateAdminOrOrganiser, */ async (req, res) => {
 
 // Update an event
 router.put('/:id', /* authenticateAdminOrOrganiser, */ async (req, res) => {
-    const { title, description, category, date, anime, organiser, price } = req.body
+    const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
     try {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
             title: title,
             description: description,
             category: category,
             date: date,
+            venue: venue,
+            coords: {
+                lat: lat,
+                lon: long
+            },
             anime: anime,
             organiser: organiser,
             price: price,

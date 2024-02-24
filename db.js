@@ -39,7 +39,11 @@ const eventSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     date: { type: Date, required: true },
-    // TODO: Add a field for location
+    venue: { type: String, required: true },
+    coords: { 
+        lat: { type: Number, required: true },
+        lon: { type: Number, required: true },
+     },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     // TODO: Add a field for the image URL
     anime: { type: String },
