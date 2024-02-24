@@ -41,10 +41,10 @@ const eventSchema = new mongoose.Schema({
     date: { type: Date, required: true },
     venue: { type: String, required: true },
     // TODO: Look at how to include coords. Had to comment it out to allow event creation
-    // coords: { 
-    //     lat: { type: Number, required: true },
-    //     lon: { type: Number, required: true },
-    //  },
+    coords: { 
+        lat: { type: Number },
+        lon: { type: Number },
+     },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     // TODO: Add a field for the image URL
     anime: { type: String },
