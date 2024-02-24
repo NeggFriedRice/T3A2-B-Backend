@@ -50,7 +50,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create an event
-router.post('/', /* authenticateAdminOrOrganiser, */ async (req, res) => {
+router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
     const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
     const parsedDate = Date.parse(date) // Convert the date from a string to a Date object
     const userId = req.user._id
@@ -62,18 +62,22 @@ router.post('/', /* authenticateAdminOrOrganiser, */ async (req, res) => {
             category: category,
             date: parsedDate,
             venue: venue,
-            coords: {
-                lat: lat,
-                lon: long
-            },
+            // coords: {
+            //     lat: lat,
+            //     lon: long
+            // },
             anime: anime,
             createdBy: userId,
             organiser: organiser,
             price: price
         })
+        console.log("New Event:", insertedEvent)
+
         await insertedEvent.save()
+        console.log("Event saved:", insertedEvent)
         res.status(201).send(insertedEvent)
     } catch (error) {
+        console.error("Error creating:", error)
         res.status(400).send({ error: error.message})
     }
 })
