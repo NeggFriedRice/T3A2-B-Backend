@@ -115,6 +115,7 @@ router.post('/login', async (req, res) => {
                 message: 'Sign in successful',
                 user: formattedUser,
                 accessToken: accessToken,
+                userId: user._id,
                 refreshToken: refreshToken
             })
         } else {
