@@ -47,7 +47,7 @@ const eventSchema = new mongoose.Schema({
      },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     // TODO: Add a field for the image URL
-    anime: { type: String },
+    anime: { type: String, required:true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     organiser: { type: String, required: true },
     price: { type: Number },
