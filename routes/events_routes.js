@@ -83,7 +83,7 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
 })
 
 // Update an event
-router.put('/:id', /* authenticateAdminOrOrganiser, */ async (req, res) => {
+router.put('/:id', authenticateAdminOrOrganiser, async (req, res) => {
     const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
     try {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
@@ -114,7 +114,7 @@ router.put('/:id', /* authenticateAdminOrOrganiser, */ async (req, res) => {
 })
 
 // Delete an event
-router.delete('/:id', /* authenticateAdminOrOrganiser, */ async (req, res) => {
+router.delete('/:id', authenticateAdminOrOrganiser, async (req, res) => {
     const deletedEvent = await Event.findByIdAndDelete(req.params.id)
     if (deletedEvent) {
         res.send('Entry deleted')
@@ -124,7 +124,7 @@ router.delete('/:id', /* authenticateAdminOrOrganiser, */ async (req, res) => {
 })
 
 // RSVP to an event
-router.post('/:id/rsvp-add', /* authenticateToken, */ async (req, res) => {
+router.post('/:id/rsvp-add', authenticateToken, async (req, res) => {
     const eventId = req.params.id
     const userId = req.user._id
     try {
@@ -148,7 +148,7 @@ router.post('/:id/rsvp-add', /* authenticateToken, */ async (req, res) => {
 })
 
 // Remove RSVP from an event
-router.post('/:id/rsvp-remove', /* authenticateToken, */ async (req, res) => {
+router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
     const eventId = req.params.id
     const userId = req.user._id
     try {
