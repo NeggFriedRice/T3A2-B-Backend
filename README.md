@@ -3,7 +3,8 @@
 ## API Documentation
 
 ### GET /
-- Returns a welcome message
+
+- Returns the API documentation in HTML format
 
 ## Events
 
@@ -41,8 +42,9 @@ User must be an organiser or administrator to create an event
 - Requires a JSON body with the following fields:
   - title: String, required
   - description: String, required
+  - venue: String, optional
   - category: ObjectId, required
-  - date: Date(YYYY-MM-DD), required
+  - date: Date, required
   - anime: String, optional
   - organiser: String, required
   - price: Number, optional
@@ -55,7 +57,8 @@ Example:
   "category": "5f8a5e3e3f3e3e3e3e3e3e3e",
   "date": "YYYY-MM-DD",
   "anime": "Anime Title",
-  "organiser": "Madman Entertainment"
+  "organiser": "Madman Entertainment",
+  "price": 20
 }
 ```
 
@@ -71,8 +74,9 @@ User must be an organiser or administrator to update an event
 - Requires a JSON body with the following optional fields:
   - title: String
   - description: String
+  - venue: String
   - category: ObjectId
-  - date: Date(YYYY-MM-DD)
+  - date: Date
   - anime: String
   - organiser: String
   - price: Number
@@ -104,9 +108,9 @@ User must be an organiser or administrator to update an event
 
 ### GET /users
 
-#### **This is a protected route, a valid JWT is required in the Bearer header**
-
 Only administrators can access this route
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
 
 - Searches for a user based on the query parameters in the link
 - Query parameters:
@@ -234,3 +238,14 @@ A JWT and a refresh token are returned if the username and password are correct
 
 - A refresh token is returned when a user logs in along with the JWT
 - It is used to get a new JWT when the old one expires by sending a POST request to /auth/token with the refresh token in the body
+
+## Images
+
+### POST /images/pfp
+
+#### **This is a protected route, a valid JWT is required in the Bearer header**
+
+- Uploads a profile picture for the user
+- Requires a form-data body with the following fields:
+  - pfp: File, required
+  - Puts the images link in the user's profile picture field in the database
