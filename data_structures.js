@@ -4,6 +4,7 @@ class UserClass {
         this.username = user.username
         this.isOrganiser = user.isOrganiser
         this.picture = user.picture
+        this.pictureUrl = user.pictureUrl
         this.description = user.description
         this.animes = user.animes
         this.characters = user.characters
