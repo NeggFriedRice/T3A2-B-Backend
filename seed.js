@@ -20,6 +20,8 @@ const events = [
       description: "Episodes 1 - 10 marathon",
       anime: "Sousou no Frieren",
       date: "2024-02-06",
+      venue: "Event Cinemas",
+      coords: { lat: -27.4698, lng: 153.0251 },
       category: "65d2d1572e99b8c3d3229cfb",
       createdBy: "65d2d1572e99b8c3d3229cfa",
       organiser: "administrator"
@@ -28,6 +30,8 @@ const events = [
       description: "Movie screening",
       anime: "Steins;Gate",
       date: "2025-02-01",
+      venue: "Event Cinemas",
+      coords: { lat: -27.4698, lng: 153.0251 },
       category: "65d2d1572e99b8c3d3229cf9",
       createdBy: "65d2d1572e99b8c3d3229cfa",
       organiser: "administrator"
@@ -36,6 +40,8 @@ const events = [
       description: "Comic-Con - The ultimate pop culture event!",
       anime: "Other",
       date: "2024-06-08",
+      venue: "Event Cinemas",
+      coords: { lat: -27.4698, lng: 153.0251 },
       category: "65d2d1572e99b8c3d3229cf8",
       createdBy: "65d2d1572e99b8c3d3229cfa",
       organiser: "administrator"
@@ -44,6 +50,8 @@ const events = [
       description: "Meet the madman behind Death Stranding",
       anime: "Other",
       date: "2024-04-05",
+      venue: "Event Cinemas",
+      coords: { lat: -27.4698, lng: 153.0251 },
       category: "65d2d1572e99b8c3d3229cfc",
       createdBy: "65d2d1572e99b8c3d3229cfa",
       organiser: "administrator"
@@ -53,6 +61,7 @@ const events = [
     anime: "Chainsaw Man",
     date: "2024-04-05",
     venue: "Event Cinemas",
+    coords: { lat: -27.4698, lng: 153.0251 },
     category: "65d2d1572e99b8c3d3229cfc",
     createdBy: "65d2d1572e99b8c3d3229cfa",
     organiser: "administrator"
@@ -62,6 +71,7 @@ const events = [
     anime: "Cowboy Bebop",
     date: "2024-04-05",
     venue: "Event Cinemas",
+    coords: { lat: -27.4698, lng: 153.0251 },
     category: "65d2d1572e99b8c3d3229cfc",
     createdBy: "65d2d1572e99b8c3d3229cfa",
     organiser: "administrator"
@@ -70,6 +80,8 @@ const events = [
     description: "Come by to watch some Initial D Stage 5 episodes and meet other like minded car enthusiasts",
     anime: "Initial D",
     date: "2024-04-05",
+    venue: "Event Cinemas",
+    coords: { lat: -27.4698, lng: 153.0251 },
     category: "65d2d1572e99b8c3d3229cfc",
     createdBy: "65d2d1572e99b8c3d3229cfa",
     organiser: "administrator"
