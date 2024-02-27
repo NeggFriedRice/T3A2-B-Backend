@@ -58,7 +58,7 @@ app.get('/', (req, res) => {
 })
 app.use('/events', eventsRouter)
 
-app.use('/users', authenticateAdmin, userRouter)
+app.use('/users', userRouter)
 
 app.use('/auth', authRouter)
 
