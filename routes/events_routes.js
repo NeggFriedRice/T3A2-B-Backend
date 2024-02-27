@@ -62,7 +62,7 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
             category: category,
             date: parsedDate,
             venue: venue,
-            coords: "123",
+            coords: coords,
             anime: anime,
             createdBy: userId,
             organiser: organiser,
