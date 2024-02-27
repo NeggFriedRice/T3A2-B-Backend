@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { User } from '../db.js'
 import UserClass from '../data_structures.js'
+import { authenticateToken } from './auth.js';
 
 const router = Router()
 
@@ -75,6 +76,20 @@ router.put('/toggle/:id', async (req, res) => {
     }
 })
 
+// Update favorite characters for a user by id
+router.put('/:id/characters', /* authenticateToken, */ async (req, res) => {
+    const { characters } = req.body
+    try {
+        const updateUser = await User.findByIdAndUpdate(req.params.id, { characters }, { new: true })
+        if (updateUser) {
+            res.send(updateUser)
+        } else {
+            res.status(404).send({ error: "User does not exist" })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+});
 
 /* Exports */
 export default router
