@@ -65,6 +65,7 @@ function verifyAndAttachUser(req, res, next, validationFn) {
   
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) return res.sendStatus(403) // invalid token
+        console.log(err)
         if (!validationFn(user)) {
             return res.status(403).send({ error: 'Insufficient permissions' })
         }
