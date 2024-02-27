@@ -44,11 +44,9 @@ const eventSchema = new mongoose.Schema({
     coords: { 
         lat: {
             type: Number,
-            required: true
         },
         lng: {
             type: Number,
-            required: true
         }
     },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
