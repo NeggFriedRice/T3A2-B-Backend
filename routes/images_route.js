@@ -40,6 +40,7 @@ async function uploadToS3(file, userId) {
         return await s3.send(command)
     } catch (error) {
         console.error(error)
+        return error
     }
 }
 
