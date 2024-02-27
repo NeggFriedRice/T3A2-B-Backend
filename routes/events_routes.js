@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 
 // Create an event
 router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
-    const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
+    const { title, description, category, date, anime, organiser, price, venue, coords } = req.body
     const parsedDate = Date.parse(date) // Convert the date from a string to a Date object
     const userId = req.user._id
 
@@ -62,10 +62,7 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
             category: category,
             date: parsedDate,
             venue: venue,
-            // coords: {
-            //     lat: lat,
-            //     lon: long
-            // },
+            coords: "123",
             anime: anime,
             createdBy: userId,
             organiser: organiser,
