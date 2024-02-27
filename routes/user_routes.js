@@ -1,12 +1,12 @@
 import { Router } from "express"
 import { User } from '../db.js'
 import UserClass from '../data_structures.js'
-import { authenticateToken } from './auth.js';
+import { authenticateToken, authenticateAdminOrOrganiser, authenticateAdmin } from './auth.js'
 
 const router = Router()
 
 // Search by username, isOrganiser, isAdmin
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
     const { username, isOrganiser, isAdmin } = req.query
     let query = {}
     
@@ -33,14 +33,14 @@ router.get('/', async (req, res) => {
 })
 
 // Get all users
-router.get('/all', async (req, res) => {
+router.get('/all', authenticateAdmin, async (req, res) => {
     const users = await User.find()
     const formattedUsers = users.map((u) => new UserClass(u)) // Map the users to the UserClass structure
     res.send({ user: formattedUsers })
 })
 
 // Get a single user by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         const formattedUser = new UserClass(user) // Map the user to the UserClass structure
@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // Delete a user
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateAdmin, async (req, res) => {
     try {
         res.send(await User.findByIdAndDelete(req.params.id))
     } catch (error) {
@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
 })
 
 // Update single user by id
-router.put('/toggle/:id', async (req, res) => {
+router.put('/toggle/:id', authenticateAdmin, async (req, res) => {
     const { isOrganiser } = req.body
     try {
         const updateUser = await User.findByIdAndUpdate(req.params.id, {
@@ -77,7 +77,7 @@ router.put('/toggle/:id', async (req, res) => {
 })
 
 // Update favorite characters for a user by id
-router.put('/:id/characters', /* authenticateToken, */ async (req, res) => {
+router.put('/:id/characters', authenticateToken, async (req, res) => {
     const { characters } = req.body
     try {
         const updateUser = await User.findByIdAndUpdate(req.params.id, { characters }, { new: true })
@@ -89,7 +89,7 @@ router.put('/:id/characters', /* authenticateToken, */ async (req, res) => {
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
-});
+})
 
 /* Exports */
 export default router
