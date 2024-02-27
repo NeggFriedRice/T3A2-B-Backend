@@ -33,10 +33,9 @@ async function uploadToS3(file, userId) {
         // store the key in the user's picture field
         const user = await User.findById(userId) 
         user.picture = file.originalname
-        const url = await getSignedUrl(s3, new GetObjectCommand({ Bucket: process.env.PFP_BUCKET, Key: file.originalname }))
+        const url = await getSignedUrl(s3, new GetObjectCommand({ Bucket: process.env.PFP_BUCKET, Key: file.originalname }), { expiresIn: 604800 })
         user.pictureUrl = url
         await user.save()
-    
         return await s3.send(command)
     } catch (error) {
         console.error(error)
