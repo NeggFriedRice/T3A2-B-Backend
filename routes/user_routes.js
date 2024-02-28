@@ -91,5 +91,20 @@ router.put('/:id/characters', authenticateToken, async (req, res) => {
     }
 })
 
+// Update favorite animes for a user by id
+router.put('/:id/animes', authenticateToken, async (req, res) => {
+    const { animes } = req.body
+    try {
+        const updateUser = await User.findByIdAndUpdate(req.params.id, { animes }, { new: true })
+        if (updateUser) {
+            res.send(updateUser)
+        } else {
+            res.status(404).send({ error: "User does not exist" })
+        }
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+})
+
 /* Exports */
 export default router
