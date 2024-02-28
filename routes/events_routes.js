@@ -81,7 +81,7 @@ router.post('/', authenticateAdminOrOrganiser, async (req, res) => {
 
 // Update an event
 router.put('/:id', authenticateAdminOrOrganiser, async (req, res) => {
-    const { title, description, category, date, anime, organiser, price, venue, lat, long } = req.body
+    const { title, description, category, date, anime, organiser, price, venue, coords } = req.body
     try {
         const updateEvent = await Event.findByIdAndUpdate(req.params.id, {
             title: title,
@@ -89,10 +89,7 @@ router.put('/:id', authenticateAdminOrOrganiser, async (req, res) => {
             category: category,
             date: date,
             venue: venue,
-            coords: {
-                lat: lat,
-                lon: long
-            },
+            coords: coords,
             anime: anime,
             organiser: organiser,
             price: price,
