@@ -8,7 +8,7 @@ const router = Router() // Create a new router
 
 // Generate an JWT access token
 function generateAccessToken(user) {
-    return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '15m' })
+    return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '1d' })
 }
 
 // Check if the refresh token is valid and return a new access token
