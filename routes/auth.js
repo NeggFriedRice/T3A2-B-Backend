@@ -61,10 +61,16 @@ async function authenticateAdminOrOrganiser(req, res, next) {
 function verifyAndAttachUser(req, res, next, validationFn) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
-  
+    if (token == null) return res.status(401).send({ error: 'No token' }) // no token
+
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403) // invalid token
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).send({ error: 'Token expired' })
+            } else {
+                return res.sendStatus(403) // invalid token
+            }
+        }
         console.log(err)
         if (!validationFn(user)) {
             return res.status(403).send({ error: 'Insufficient permissions' })
@@ -92,6 +98,7 @@ router.post('/register', async (req, res) => {
         await user.save() // Save the user
         res.send({ message: 'User created successfully' })
     } catch (error) {
+        console.error(error)
         res.status(400).send({ error: 'User creation failed' })
     }
 })

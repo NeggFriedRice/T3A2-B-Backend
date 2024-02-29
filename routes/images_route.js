@@ -5,6 +5,7 @@ import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3
 import dotenv from "dotenv"
 import { User, Event } from "../db.js"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import sharp from "sharp"
 
 dotenv.config()
 
@@ -22,16 +23,30 @@ const s3 = new S3Client({ // Create a new S3 client
 })
 
 async function uploadToS3(file, userId, eventId) {
+    if (!file) {
+        return { error: "No file" }
+    }
+
+    let buffer;
+    if (userId) {
+        buffer = await sharp(file.buffer).resize({ height: 200, width: 200, fit: "cover" }).toBuffer()
+    } else if (eventId) {
+        buffer = await sharp(file.buffer).resize({ height: 300, width: 200, fit: "cover" }).toBuffer()
+    } else {
+        return { error: "Invalid request" }
+    }
+
     const params = {
         Bucket: process.env.PFP_BUCKET,
         Key: file.originalname,
-        Body: file.buffer,
+        Body: buffer,
         ContentType: file.mimetype,
     }
     try {
         const command = new PutObjectCommand(params)
         // store the key in the user's picture field
         if (userId) {
+
             const user = await User.findById(userId) 
             user.picture = file.originalname
             const url = await getSignedUrl(s3, new GetObjectCommand({ Bucket: process.env.PFP_BUCKET, Key: file.originalname }), { expiresIn: 604800 })

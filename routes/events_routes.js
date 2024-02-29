@@ -4,9 +4,9 @@ import { authenticateAdminOrOrganiser, authenticateToken } from './auth.js'
 
 const router = Router() // Create a new router
 
-// Search by category, title, date
+// Search by category, title, date, user
 router.get('/', async (req, res) => {
-    const { category, title, month, year } = req.query
+    const { category, title, month, year, userId } = req.query
 
     // Determine the search criteria
     if (category) {
@@ -123,14 +123,18 @@ router.post('/:id/rsvp-add', authenticateToken, async (req, res) => {
     const userId = req.user._id
     try {
         const event = await Event.findById(eventId)
+        const user = await User.findById(userId)
         // Check if the user has already RSVPed
-        if (event) {
-            if (event.rsvp.includes(userId)) {
+        if (event && user) {
+            if (event.rsvp.includes(userId) && user.rsvp.includes(eventId)) {
                 res.status(400).send({ error: 'User has already RSVPed' })
             } else {
                 // Add the user to the RSVP list
                 event.rsvp.push(userId)
                 await event.save()
+                // Add the event to the user's RSVP list
+                user.rsvp.push(eventId)
+                await user.save()
                 res.send({ message: 'RSVP added'})
             }
         } else {
@@ -146,6 +150,7 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
     const eventId = req.params.id
     const userId = req.user._id
     try {
+<<<<<<< Updated upstream
         const event = await Event.findById(eventId)
         // Check if the user has already RSVPed
         if (event) {
@@ -157,6 +162,16 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
             } else {
                 res.status(400).send({ error: 'User has not RSVPed' })
             }
+=======
+        const event = await Event.findByIdAndUpdate(eventId, {
+            $pull: { rsvp: userId }
+        })
+        const user = await User.findByIdAndUpdate(userId, {
+            $pull: { rsvp: eventId }
+        })
+        if (event && user) {
+            res.send({ message: 'RSVP removed' })
+>>>>>>> Stashed changes
         } else {
             res.status(404).send({ error: 'Entry does not exist' })
         }
