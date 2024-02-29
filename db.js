@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     actors: [{ type: String }],
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
     isAdmin: { type: Boolean, default: false },
+    rsvp: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
     date_created: { type: Date, default: Date.now },
 })
 const User = mongoose.model("User", userSchema)
