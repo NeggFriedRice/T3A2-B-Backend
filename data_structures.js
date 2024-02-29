@@ -10,6 +10,7 @@ class UserClass {
         this.characters = user.characters
         this.actors = user.actors
         this.isAdmin = user.isAdmin
+        this.rsvp = user.rsvp
         this.date_created = user.date_created
     }
 }
