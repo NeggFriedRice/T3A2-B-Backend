@@ -151,7 +151,7 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
         if (event) {
             // Remove the user from the RSVP list
             if (event.rsvp.includes(userId)) {
-                event.rsvp = event.rsvp.filter(id => id !== userId)
+                event.rsvp = event.rsvp.filter(id => !id.equals(userId));
                 await event.save()
                 res.send({ message: 'RSVP removed' })
             } else {
