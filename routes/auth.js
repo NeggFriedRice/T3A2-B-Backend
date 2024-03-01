@@ -71,7 +71,6 @@ function verifyAndAttachUser(req, res, next, validationFn) {
                 return res.sendStatus(403) // invalid token
             }
         }
-        console.log(err)
         if (!validationFn(user)) {
             return res.status(403).send({ error: 'Insufficient permissions' })
         }
@@ -80,7 +79,7 @@ function verifyAndAttachUser(req, res, next, validationFn) {
     })
 }
 
-// Decodes the access token and returns token information
+// Decodes the access token and returns if token is expired
 router.post('/decode', (req, res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -89,12 +88,12 @@ router.post('/decode', (req, res) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
             if (err.name === 'TokenExpiredError') {
-                return res.status(200).send({ error: 'Token expired' })
-            } else {
+                return res.status(401).send({ error: 'Token expired' })
+            } else  {
                 return res.sendStatus(403) // invalid token
             }
         }
-        res.send(user)
+        res.status(200).send({ expired: false })
     })
 })
 
