@@ -13,13 +13,13 @@ function generateAccessToken(user) {
 
 // Check if the refresh token is valid and return a new access token
 router.post('/token', (req, res) => {
-    const refreshTokenParam = req.body.token
+    const refreshTokenParam = req.body.refreshToken
     if (refreshTokenParam == null) return res.sendStatus(401)
     if (!RefreshToken.findOne({ token: refreshTokenParam })) return res.sendStatus(403)
     jwt.verify(refreshTokenParam, process.env.REFRESH_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
         const accessToken = generateAccessToken({ name: user })
-        res.json({ accessToken: accessToken })
+        res.status(200).json({ accessToken: accessToken })
     })
 })
 
@@ -79,6 +79,24 @@ function verifyAndAttachUser(req, res, next, validationFn) {
         next()
     })
 }
+
+// Decodes the access token and returns token information
+router.post('/decode', (req, res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.status(401).send({ error: 'No token' }) // no token
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(200).send({ error: 'Token expired' })
+            } else {
+                return res.sendStatus(403) // invalid token
+            }
+        }
+        res.send(user)
+    })
+})
 
 router.delete('/logout', (req, res) => {
     const refreshToken = req.body.token

@@ -150,19 +150,6 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
     const eventId = req.params.id
     const userId = req.user._id
     try {
-<<<<<<< Updated upstream
-        const event = await Event.findById(eventId)
-        // Check if the user has already RSVPed
-        if (event) {
-            // Remove the user from the RSVP list
-            if (event.rsvp.includes(userId)) {
-                event.rsvp = event.rsvp.filter(id => !id.equals(userId));
-                await event.save()
-                res.send({ message: 'RSVP removed' })
-            } else {
-                res.status(400).send({ error: 'User has not RSVPed' })
-            }
-=======
         const event = await Event.findByIdAndUpdate(eventId, {
             $pull: { rsvp: userId }
         })
@@ -171,7 +158,6 @@ router.post('/:id/rsvp-remove', authenticateToken, async (req, res) => {
         })
         if (event && user) {
             res.send({ message: 'RSVP removed' })
->>>>>>> Stashed changes
         } else {
             res.status(404).send({ error: 'Entry does not exist' })
         }
