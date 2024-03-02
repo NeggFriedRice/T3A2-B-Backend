@@ -151,6 +151,16 @@ router.post('/login', async (req, res) => {
     }
 })
 
+// To test the authentication middleware
+router.get('/protected-route', authenticateToken, (req, res) => {
+    res.send({ message: 'Access granted' })
+})
+
+// To test the admin authentication middleware
+router.get('/admin-protected-route', authenticateAdmin, (req, res) => {
+    res.send({ message: 'Access granted' })
+})
+
 /* Exports */
 export default router
 export { authenticateToken, authenticateAdmin, authenticateOrganiser, authenticateAdminOrOrganiser }

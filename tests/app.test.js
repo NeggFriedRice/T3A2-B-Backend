@@ -2,9 +2,6 @@ import mongoose from 'mongoose'
 import request from 'supertest'
 import app from '../app.js'
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-
 /* Connecting to the database before each test. */
 beforeEach(async () => {
   await mongoose.connect(process.env.DB_URI);
