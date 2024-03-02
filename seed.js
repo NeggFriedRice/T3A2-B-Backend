@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt"
 import { closeConnection, Category, Event, User } from "./db.js"
 
-
 const users = [
     { username: "administrator", password: "admin", isAdmin: true },
     { username: "organiser", password: "organiser", isOrganiser: true },

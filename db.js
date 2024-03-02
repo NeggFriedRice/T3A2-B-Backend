@@ -40,19 +40,19 @@ const eventSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     date: { type: Date, required: true },
-    venue: { type: String},
-    coords: { 
+    venue: { type: String },
+    coords: {
         lat: {
             type: Number,
         },
         lng: {
             type: Number,
-        }
+        },
     },
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     picture: { type: String },
     pictureUrl: { type: String },
-    anime: { type: String, required:true },
+    anime: { type: String, required: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     organiser: { type: String, required: true },
     price: { type: Number },
