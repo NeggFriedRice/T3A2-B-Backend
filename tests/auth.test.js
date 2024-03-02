@@ -1,8 +1,10 @@
 import request from "supertest"
 import jwt from "jsonwebtoken"
 import app from "../app.js"
+import { User } from "../db.js"
+import mongoose from "mongoose"
 
-describe("verifyAndAttachUser", () => {
+describe("token authentication", () => {
     let token
 
     beforeEach(() => {
@@ -56,5 +58,86 @@ describe("verifyAndAttachUser", () => {
 
         expect(res.statusCode).toBe(403)
         expect(res.body.error).toBe("Insufficient permissions")
+    })
+
+    test("should return 200 if token is not expired", async () => {
+        const res = await request(app)
+            .post("/auth/decode")
+            .set("Authorization", `Bearer ${token}`)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.expired).toBe(false)
+    })
+})
+
+describe("user login authentication", () => {
+    let token
+
+    beforeEach(() => {
+        // Mock user and sign a token
+        const user = {  name: "administrator", password: "admin" }
+        token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" })
+    })
+
+    test("should return 200 if user is authenticated and logout", async () => {
+        const loginRes = await request(app)
+            .post("/auth/login")
+            .send({ username: "administrator", password: "admin" })
+
+        expect(loginRes.statusCode).toBe(200)
+        expect(loginRes.body.user).toBeDefined()
+        expect(loginRes.body.accessToken).toBeDefined()
+        expect(loginRes.body.refreshToken).toBeDefined()
+
+        const logoutRes = await request(app)
+            .delete("/auth/logout")
+            .send({ token: loginRes.body.refreshToken })
+
+        expect(logoutRes.statusCode).toBe(204)
+    })
+
+    test("should return 400 if user is not authenticated", async () => {
+        const res = await request(app)
+            .post("/auth/login")
+            .send({ username: "invaliduser", password: "admin" })
+
+        expect(res.statusCode).toBe(400)
+    })
+
+    test("should return 400 if user is not authenticated", async () => {
+        const res = await request(app)
+            .post("/auth/login")
+            .send({ username: "administrator", password: "invalidpassword" })
+
+        expect(res.statusCode).toBe(400)
+    })
+
+    test("should return 204 if user logs out", async () => {
+        const res = await request(app)
+            .delete("/auth/logout")
+            .send({ token: "refreshtoken" })
+            
+        expect(res.statusCode).toBe(204)
+    })
+})
+
+describe("user registration", () => {
+
+    test("should return 200 if user is registered", async () => {
+        const res = await request(app)
+            .post("/auth/register")
+            .send({ username: "newuser", password: "newpassword" })
+
+        expect(res.statusCode).toBe(200)
+    })
+
+    test("should return 400 if user is not registered", async () => {
+        const res = await request(app)
+            .post("/auth/register")
+            .send({ username: "newuser", password: "newpassword" })
+
+        expect(res.statusCode).toBe(400)
+
+        await User.deleteMany({ username: "newuser" })
     })
 })
