@@ -8,17 +8,17 @@ const router = Router() // Create a new router
 
 // Generate an JWT access token
 function generateAccessToken(user) {
-    return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser }, process.env.JWT_SECRET, { expiresIn: "1d" })
+    return jwt.sign({ _id: user._id, username: user.username, isAdmin: user.isAdmin, isOrganiser: user.isOrganiser}, process.env.JWT_SECRET, { expiresIn: '3h' })
 }
 
 // Check if the refresh token is valid and return a new access token
 router.post("/token", (req, res) => {
     const refreshTokenParam = req.body.refreshToken
-    if (refreshTokenParam == null) return res.sendStatus(401)
+    if (refreshTokenParam == null) return res.Status(401).send({ error: 'No token' }) // no token
     if (!RefreshToken.findOne({ token: refreshTokenParam })) return res.sendStatus(403)
     jwt.verify(refreshTokenParam, process.env.REFRESH_SECRET, (err, user) => {
         if (err) return res.sendStatus(403)
-        const accessToken = generateAccessToken({ name: user })
+        const accessToken = generateAccessToken(user)
         res.status(200).json({ accessToken: accessToken })
     })
 })
@@ -87,9 +87,9 @@ router.post("/decode", (req, res) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-            if (err.name === "TokenExpiredError") {
-                return res.status(401).send({ error: "Token expired" })
-            } else {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(201).send({ error: 'Token expired' })
+            } else  {
                 return res.sendStatus(403) // invalid token
             }
         }
@@ -128,7 +128,7 @@ router.post("/login", async (req, res) => {
         if (match) {
             const userName = { name: user }
             const accessToken = generateAccessToken(user) // Generate an access token
-            const refreshToken = jwt.sign(userName, process.env.REFRESH_SECRET) // Generate a refresh token
+            const refreshToken = jwt.sign(userName, process.env.REFRESH_SECRET, {expiresIn: '1w'}) // Generate a refresh token
 
             // Save the refresh token in the database
             const refreshTokenModel = new RefreshToken({ token: refreshToken })
