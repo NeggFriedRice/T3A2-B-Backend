@@ -2,7 +2,6 @@ import request from "supertest"
 import jwt from "jsonwebtoken"
 import app from "../app.js"
 import { User } from "../db.js"
-import mongoose from "mongoose"
 
 describe("token authentication", () => {
     let token
@@ -141,3 +140,14 @@ describe("user registration", () => {
         await User.deleteMany({ username: "newuser" })
     })
 })
+
+describe("user logout", () => {
+    test("should return status code 204", async () => {
+      const testUser = {username: "Testing Account 19", password: "Abcd123!"}
+      const token = jwt.sign(testUser, process.env.JWT_SECRET, { expiresIn: "1h" })
+      const res = await request(app)
+          .delete("/auth/logout")
+          .set("Authorization", `Bearer ${token}`)
+      expect(res.statusCode).toBe(204)
+    })
+  })

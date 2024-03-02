@@ -6,7 +6,7 @@ const router = Router() // Create a new router
 
 // Search by category, title, date, user
 router.get('/', async (req, res) => {
-    const { category, title, month, year, userId } = req.query
+    const { category, title, month, year } = req.query
 
     // Determine the search criteria
     if (category) {
