@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "seed": "node seed.js",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
